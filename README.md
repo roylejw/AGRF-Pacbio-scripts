@@ -26,11 +26,11 @@
 <br />
 <div align="center">
   <a href="https://www.agrf.org.au">
-    <img src="logo.png" alt="Logo" width="100" height="100">
+    <img src="logos/logo.png" alt="Logo" width="100" height="100">
   </a>
   &nbsp;
   <a href="https://www.pacb.com">
-    <img src="pacbio-logo.PNG" alt="Logo" width="140" height="80">
+    <img src="logos/pacbio-logo.PNG" alt="Logo" width="140" height="80">
   </a>
 
 <h3 align="center">An AGRF repository for manipulating, assembling and analysis HiFi data in AWS</h3>
