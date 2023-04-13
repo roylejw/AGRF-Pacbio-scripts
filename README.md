@@ -83,7 +83,7 @@ Take note that your username will be different - The Pacbio tools image uses 'ub
 <!-- CONTACT -->
 ## <h3 align="center">Contact</h3>
 
-<h3 align="center">Jack Royle - [@Royleity](https://twitter.com/Royleity) - jack.royle@agrf.org.au - [![LinkedIn][linkedin-shield]][linkedin-url]
+Jack Royle - [@Royleity](https://twitter.com/Royleity) - jack.royle@agrf.org.au - [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
