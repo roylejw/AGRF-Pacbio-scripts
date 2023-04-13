@@ -18,7 +18,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 
 
@@ -81,7 +81,7 @@ Take note that your username will be different - The Pacbio tools image uses 'ub
 <!-- CONTACT -->
 ## Contact
 
-Jack Royle - [@Royleity](https://twitter.com/Royleity) - jack.royle@agrf.org.au
+Jack Royle - [@Royleity](https://twitter.com/Royleity) - jack.royle@agrf.org.au - [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
