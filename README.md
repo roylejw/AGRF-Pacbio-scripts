@@ -32,15 +32,17 @@
   <a href="https://www.pacb.com">
     <img src="logos/pacbio-logo.PNG" alt="Logo" width="140" height="80">
   </a>
+</div>
 
 <h3 align="center">An AGRF repository for manipulating, assembling and analysis HiFi data in AWS</h3>
 
 <!-- GETTING STARTED -->
-## Getting Started
+
+## <h3 align="center">Getting Started</h3>
 
 Simply pull this repository into the AWS instance to have the most up-to-date copies of the scripts available. The AWS Instances are maintained through AMI's separately, and should always be compatible (and work out of the box).
 
-### Prerequisites
+### <h3 align="center">Prerequisites</h3>
 
 Due to compatability issues, there are two separate AMIs to have running depending on what kind of work you intend on running. 
 
@@ -55,7 +57,7 @@ If you want to run the 16S workflow, or any future Nextflow workflow, you will n
 
 Take note that your username will be different - The Pacbio tools image uses 'ubuntu', whereas the nextflow image uses 'ec2-user'. Keep that in mind when connecting with Putty/Filezilla/etc.
 
-### Installation
+### <h3 align="center">Installation</h3>
 
 1. Turn on and log into AMI as per the SOP.
 
@@ -69,7 +71,7 @@ Take note that your username will be different - The Pacbio tools image uses 'ub
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## <h3 align="center">Usage</h3>
 
   ```sh
   to do
@@ -79,9 +81,9 @@ Take note that your username will be different - The Pacbio tools image uses 'ub
 
 
 <!-- CONTACT -->
-## Contact
+## <h3 align="center">Contact</h3>
 
-Jack Royle - [@Royleity](https://twitter.com/Royleity) - jack.royle@agrf.org.au - [![LinkedIn][linkedin-shield]][linkedin-url]
+<h3 align="center">Jack Royle - [@Royleity](https://twitter.com/Royleity) - jack.royle@agrf.org.au - [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
