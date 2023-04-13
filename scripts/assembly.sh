@@ -1,40 +1,65 @@
 #!/bin/sh
 
-sample=$1
-hic1=$2
-hic2=$3
-fastq1=$4
-fastq2=$5
-instanceid=$6
+cd ~
 
-if [ ! -e /home/ubuntu/"$hic1" ]; then
-	echo "File "$hic1" not found. Check and restart"
-	exit 1
-fi
+if [ "$format" == "bam" ]; then
+	source ~/miniconda3/etc/profile.d/conda.sh
+	conda activate pbtools
 
-if [ ! -e /home/ubuntu/"$hic2" ]; then
-	echo "File "$hic2" not found. Check and restart"
-	exit 1
-fi
-
-if [ ! -e /home/ubuntu/"$fastq1" ]; then
-	echo "File "$fastq1" not found. Check and restart"
-	exit 1
-fi
-
-if [ ! -e /home/ubuntu/"$fastq2" ]; then
-	echo "File "$fastq2" not found. Check and restart"
-	exit 1
+	if [ "$cells" == 1 ]; then
+		echo "Indexing "$hifi1" bam file."
+		pbindex "$hifi1"."$format"
+		echo "Converting bam's to fastq's"
+		bam2fastq -o "$sample" -u "$hifi1"
+	fi
+	
+	if [ "$cells" == 2 ]; then
+		echo "Indexing bam files."
+		pbindex "$hifi1"."$format"
+		pbindex "$hifi2"."$format"
+		echo "Converting bam's to fastq's"
+		bam2fastq -o "$sample"_1 -u "$hifi1"
+		bam2fastq -o "$sample"_2 -u "$hifi2"
+		cat "$sample"_1.fastq "$sample"_2.fastq > combined.fastq
+	fi
+	
+	if [ "$cells" == 3 ]; then
+		echo "Indexing bam files."
+		pbindex "$hifi1"."$format"
+		pbindex "$hifi2"."$format"
+		pbindex "$hifi3"."$format"
+		echo "Converting bam's to fastq's"
+		bam2fastq -o "$sample"_1 -u "$hifi1"
+		bam2fastq -o "$sample"_2 -u "$hifi2"
+		bam2fastq -o "$sample"_3 -u "$hifi3"
+		
+		cat "$sample"_1.fastq "$sample"_2.fastq "$sample"_3.fastq > combined.fastq
+	fi
+	
+	if [ "$cells" == 4 ]; then
+		echo "Indexing "$hifi1""
+		pbindex "$hifi1"."$format"
+		echo "Indexing "$hifi2""
+		pbindex "$hifi2"."$format"
+		echo "Indexing "$hifi3""
+		pbindex "$hifi3"."$format"
+		echo "Indexing "$hifi4""
+		pbindex "$hifi4"."$format"
+		echo "Converting bam's to fastq's"
+		bam2fastq -o "$sample"_1 -u "$hifi1"
+		bam2fastq -o "$sample"_2 -u "$hifi2"
+		bam2fastq -o "$sample"_3 -u "$hifi3"
+		bam2fastq -o "$sample"_4 -u "$hifi4"		
+		
+		cat "$sample"_1.fastq "$sample"_2.fastq "$sample"_3.fastq "$sample"_4.fastq > combined.fastq
+	fi
+	conda deactivate
 fi
 
 mkdir /mnt/efs/fs2/output/hifiasm_"$sample"
 cd /mnt/efs/fs2/output/hifiasm_"$sample"
 
-if [ ! -e /home/ubuntu/combined.fastq ]; then
-	cat /home/ubuntu/"$fastq1" /home/ubuntu/"$fastq2" > /home/ubuntu/combined.fastq
-fi
-
-/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".hic.asm -t 48 --hg-size 3g --h1 /home/ubuntu/"$hic1" --h2 /home/ubuntu/"$hic2" /home/ubuntu/combined.fastq 2> "$sample".log
+/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".hic.asm -t 48 --hg-size "genome_size" --h1 /home/ubuntu/"$hic1" --h2 /home/ubuntu/"$hic2" /home/ubuntu/combined.fastq 2> "$sample".log
 
 awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.p_ctg.gfa > "$sample".primary.fasta
 awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.hap1.p_ctg.gfa > "$sample".hap1.fasta
