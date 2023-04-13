@@ -1,5 +1,7 @@
 #!/bin/sh
 
+clear
+
 echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any issues."
 
 echo "Remember, your answers are case-sensitive!!!"
@@ -238,5 +240,44 @@ if [[ "$job_type" == 1 ]] ; then
 	echo "Time to run the job. Come back in ~14 hours or so. Please tell me you put me in a screen..."
 	
 	source ~/AGRF-Pacbio-scripts/scripts/assembly.sh	
+fi
+
+if [[ "$job_type" == 2 ]] ; then
+	
+	echo "You have selected "$job_type". Please rsync/filezilla all files directly into the home directory (/home/ubuntu)."
+	echo "What is the filename of the sequencing file? Do not include its filetype."
+	read -r filename
+	echo "What is the format of the sequencing file? Options are bam or fastq.gz."
+	read -r format	
+	
+	MAX_TRIES=0
+	if [ ! -e /home/ubuntu/"$filename"."$format" ]; then
+		if [ "$MAX_TRIES" == 3 ]; then 
+			echo "Too many incorrect tries. Check your files and run me again!"
+			exit 1
+		fi
+		echo "File "$filename"."$format" not found. Try again."
+		MAX_TRIES=$((MAX_TRIES + 1))
+		echo "What is the filename of the sequencing file? Do not include its filetype."
+		read -r filename
+		echo "What is the format of the sequencing file? Options are bam or fastq.gz."
+		read -r format	
+	fi
+	
+	echo  "What is the barcode set? Options: 16S, isoseq, M13, Universal. Type as seen (inc. capitals)"
+	read -r barcode
+	
+	if [ "$barcode" != "isoseq" ]; then
+		echo  "Are these symmetric or asymmetric?"
+		read -r direction
+	fi
+	
+	echo "What name would you like to give the output folder?"
+	read -r outname
+	
+	echo "Running the demultiplex now."
+	
+	source ~/AGRF-Pacbio-scripts/scripts/demultiplex.sh
+	echo "Demultiplex complete".
 fi
 
