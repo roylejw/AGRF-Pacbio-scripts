@@ -53,57 +53,6 @@ fi
 	while read client || [[ $client ]]; do
 		echo "Setting up "$client". Time started is" && date
 		
-<<comment
-		### commenting out AWS job definition and submission - not working for some reason ###
-		cat > job_"$client".json << EOL
-{
-  "jobDefinitionName": "16S-PP-Def",
-  "type": "container",
-  "containerProperties": {
-    "image": "public.ecr.aws/amazonlinux/amazonlinux:2",
-    "command": [
-		"bash ~/pool_party.sh"
-    ],
-    "environment": [
-      {
-        "name": "run_number",
-        "value": "$run_number"
-      },
-      {
-        "name": "filename",
-        "value": "$filename"
-      },
-      {
-        "name": "format",
-        "value": "$format"
-      },
-      {
-        "name": "client",
-        "value": "$client"
-      }
-    ],
-	"resourceRequirements": [
-      {
-        "value": "4",
-        "type": "VCPU"
-      },
-      {
-        "value": "16000",
-        "type": "MEMORY"
-      }
-    ],
-	"privileged": true,
-	"linuxParameters": {
-      "initProcessEnabled": true
-	  }
-  }
-}
-EOL
-
-		aws batch register-job-definition --job-definition-name 16S-PP-Def --cli-input-json file://job_"$client".json
-
-		aws batch submit-job --job-name "$client" --job-queue PB16s-queue-2 --job-definition 16S-PP-Def
-comment
 
 		### Housekeeping - no need to change ###
 		EFS="/mnt/efs/fs2/pool_party"
