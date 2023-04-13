@@ -61,7 +61,8 @@ Take note that your username will be different - The Pacbio tools image uses 'ub
 
 1. Turn on and log into AMI as per the SOP.
 
-2. Clone the repo - this can be anywhere in the instance.
+2. Clone the repo into the home directory (/home/ubuntu/ or /home/ec2-user/). If you do this immediately after logging into the instance, you'll already be here.
+
    ```sh
    git clone https://github.com/roylejw/PacBio-related-scripts.git
    ```
