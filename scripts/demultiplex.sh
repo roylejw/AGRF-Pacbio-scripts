@@ -3,16 +3,17 @@
 
 ### Housekeeping variables - no need to change ###
 storage="/mnt/efs/fs2/output"
-resources="/mnt/efs/fs1/resources"
+resources="/home/ubuntu/AGRF-Pacbio-scripts/resources"
 
 # Source conda to start lima
 source ~/miniconda3/etc/profile.d/conda.sh
 cd ~
 
-### Copy barcodes in  ###
+### Copy barcodes in and clear weird windows chars from csv ###
 
 dos2unix barcode-sample-"$barcode".csv
 mv barcode-sample-"$barcode".csv barcode-sample.csv
+cp "$resources"/"$barcode".fasta .
 
 ### Run lima ###
 
@@ -35,7 +36,7 @@ if [ "$barcode" == "isoseq" ];
 		format=fastq
 	fi
 	conda activate lima
-	lima --hifi-preset ASYMMETRIC --biosample-csv barcode-sample.csv --split-named --output-missing-pairs "$filename"."$format" "$barcode".fasta demux."$format"
+	lima --hifi-preset ASYMMETRIC --split-named --output-missing-pairs "$filename"."$format" "$barcode".fasta demux."$format"
 fi 
 
 ### Create directory, format and rename demultiplexed samples ###
