@@ -46,7 +46,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of the first file?"
 			read -r hic1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hic1" ]; then
+			if [ ! -e /home/ubuntu/"$hic1".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -58,7 +58,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of the second file?"
 			read -r hic2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hic2" ]; then
+			if [ ! -e /home/ubuntu/"$hic2".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -79,7 +79,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1" ]; then
+			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -97,7 +97,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1" ]; then
+			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -110,7 +110,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2" ]; then
+			if [ ! -e /home/ubuntu/"$hifi2".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -128,7 +128,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1" ]; then
+			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -141,7 +141,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2" ]; then
+			if [ ! -e /home/ubuntu/"$hifi2".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -154,7 +154,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 3?"
 			read -r hifi3	
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi3" ]; then
+			if [ ! -e /home/ubuntu/"$hifi3".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -172,7 +172,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1" ]; then
+			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -185,7 +185,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2" ]; then
+			if [ ! -e /home/ubuntu/"$hifi2".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -198,7 +198,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 3?"
 			read -r hifi3	
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi3" ]; then
+			if [ ! -e /home/ubuntu/"$hifi3".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -210,7 +210,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 4?"
 			read -r hifi4
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi4" ]; then
+			if [ ! -e /home/ubuntu/"$hifi4".* ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
