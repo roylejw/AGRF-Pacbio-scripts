@@ -86,11 +86,30 @@ The input for this job can be either bam, fastq.gz or fastq.
 
 ### <h3 align="center">Job #3 - Pool party pt. 1</h3>
 
-To do.
+To run a pool party job, first ensure you have the PacBio tools AMI AND Nextflow AMI running. The Nextflow AMI needs to be running on an m5.xlarge on demand instance. You will need the following files in the home directory to start a pool party run:
+- The sequencing file (bam, fastq.gz or fastq all acceptable inputs. **Must be one file**)
+- A filled-in copy of the details.tsv found in the resources folder. Must be named details.tsv
+- A text file with each of the contract IDs you wish to analyse in this run. Must be named contracts.txt
 
-### <h3 align="center">Job #3 - Pool party pt. 2</h3>
+If you know there is a complex batch within the pool, ensure you analyze it seperately. Give it a different batch name, contracts.txt and details.tsv for complex batches, and you can run them as a separate batch in step two from the same combined Hifi data. 
 
-To do.
+  ```sh
+  bash AGRF-Pacbio-scripts/master.sh
+  
+  >3
+  ```
+  
+### <h3 align="center">Job #4 - Pool party pt. 2</h3>
+
+Simply clone in this repo and run job #4. If these are non-complex batches, answer 'no' to the NB classification question. If these are all complex, answer yes and it will skip the Naive-Bayes classification step.
+
+  ```sh
+  bash AGRF-Pacbio-scripts/master.sh
+  
+  >4
+  ```
+
+The output will be places in the EFS pool party output, separated by contracts needed to be sent out ```/mnt/efs/fs2/pool_party/YOUR_BATCH/```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
