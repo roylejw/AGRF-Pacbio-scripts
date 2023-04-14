@@ -90,7 +90,7 @@ if [ "$format" == "fastq" ]; then
 	source ~/miniconda3/etc/profile.d/conda.sh
 
 	if [ "$cells" == 1 ]; then
-		mv "$hifi1".fastq combined.fastq
+		cp "$hifi1".fastq combined.fastq
 	fi
 	
 	if [ "$cells" == 2 ]; then
