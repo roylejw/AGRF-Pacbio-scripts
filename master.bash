@@ -41,7 +41,7 @@ if [[ "$job_type" == 1 ]] ; then
 	
 	# HiC data inclusion
 	
-	echo "Are you including HiC data? Yes or no."
+	echo "Are you including HiC data? yes or no."
 	read -r hic_confirm
 	
 		if [ "$hic_confirm" == "yes" ]; then
@@ -72,7 +72,7 @@ if [[ "$job_type" == 1 ]] ; then
 		fi
 	
 	# Do we need to convert the files? Or unzip them?
-	echo "Are you files bam, or fastq? Please note they all need to be the same!"
+	echo "Are you files bam, fastq.gz, or fastq? Please note they all need to be the same!"
 	read -r format
 	
 	# Hifi cells 
