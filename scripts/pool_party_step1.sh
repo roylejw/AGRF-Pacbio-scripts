@@ -5,10 +5,6 @@ source ~/miniconda3/etc/profile.d/conda.sh
 
 
 script_start=`date +%M`
-run_number=$1
-filename=$2
-format=$3
-verify=$4
 
 if [ "$verify" == "verify" ]; then
 	if [ -d /mnt/efs/fs2/pool_party/"$run_number" ]; then
