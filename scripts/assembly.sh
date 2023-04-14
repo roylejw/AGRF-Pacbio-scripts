@@ -106,6 +106,11 @@ if [ "$format" == "fastq" ]; then
 	fi
 fi
 
+if [ ! -e /home/ubuntu/combined.fasta ]; then
+	echo "Something went wrong with preparing the fastq file"
+	exit 1
+fi
+
 mkdir /mnt/efs/fs2/output/hifiasm_"$sample"
 cd /mnt/efs/fs2/output/hifiasm_"$sample"
 
