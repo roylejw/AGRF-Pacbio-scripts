@@ -66,17 +66,53 @@ Take note that your username will be different - The Pacbio tools image uses 'ub
    ```sh
    git clone https://github.com/roylejw/PacBio-related-scripts.git
    ```
+   
+3. Filezilla/rsync all files directly into the home directory - no need to use EFS storage (it will slow you down). The script will yell at you if your files aren't here.
+
+**I recommend you run all jobs in a screen**. This will avoid your PuTTY window timing out and you losing your assembly progress. To do this, simply type ```screen ``` and press enter. If you are unfamiliar with the use of screen, [the manual can be found here](https://www.gnu.org/software/screen/manual/screen.html#Getting-Started). 
+
+**For a quick cheatsheet**:
+- To detach from the screen, press CTRL + A, then CTRL + D.
+- To reattach to the screen to check the progress of the job, type ```screen -R```. 
+  - Sometimes, this throws a fit and won't re-attach (usually if multiple sessions exist). If so, type ```screen -l``` to see a list of screens, and then type ```screen -x pid.tty.host```, where pid.tty.host is the appended name in the screen list. 
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- USAGE EXAMPLES -->
-## <h3 align="center">Usage</h3>
+## <h3 align="center">How To Run</h3>
+### <h3 align="center">Job #1 - Hifiasm assembly</h3>
+
+To run an automated Hifiasm assembly, run the master script and select option 1. This will run a hifiasm assembly job with automatic QUAST and BUSCO QC. BUSCO is set to auto-linage assessment, through the ```auto-lineage-euk``` command. This automated script can handle up to 4 hifi cells at the moment, and requires either a bam, or fastq.gz input. The output is placed in AWS EFS storage, accessible at ```/mnt/efs/fs2/output```.
 
   ```sh
-  to do
+  bash AGRF-Pacbio-scripts/master.sh
+  
+  >1
   ```
+### <h3 align="center">Job #2 - Demultiplexing</h3>
+
+To run a demultiplex job, run the master script and select option 2. This will demultiplex your hifi data using Lima, rename it and place the output in AWS EFS storage, accessible at ```/mnt/efs/fs2/output``` as fastq files.
+
+You must fill out the barcode csv (a template can be found in the resources folder) with corresponding sample names. If you do not, the script will not be able to rename your files correctly. This must be placed in ```/home/ubuntu``` with the other input files. Please keep the filename the same as those found in the resources folder. 
+
+The input for this job can be either bam, fastq.gz or fastq.
+
+  ```sh
+  bash AGRF-Pacbio-scripts/master.sh
+  
+  >2
+  ```  
+
+### <h3 align="center">Job #3 - Pool party pt. 1</h3>
+
+To do.
+
+### <h3 align="center">Job #3 - Pool party pt. 2</h3>
+
+To do.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
