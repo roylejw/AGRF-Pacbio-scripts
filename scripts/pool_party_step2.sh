@@ -1,8 +1,6 @@
 #!/bin/sh
 
 ### Housekeeping - no need to change ###
-run_number=$1
-instance=$2
 EFS="/mnt/efs/fs2/pool_party"
 TMPDIR="/mnt/efs/fs1/temp"
 contracts=""$EFS"/"$run_number"/"contracts.txt""
@@ -13,9 +11,13 @@ cd "$TMPDIR"
 while read client || [[ $client ]]; do
 
 	cd "$client"
-	#nextflow run /mnt/efs/fs1/pb-16S-nf/main3.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 37 --vsearch_cpu 37 -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
 	rm report_"$client"_Analysis/*
-	nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --skip_nb true -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
+	if [[ "$skipnb" == "yes" ]]; then
+		nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --skip_nb true -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
+	else
+		nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
+	fi
+	
 	### Create Analysis Directory, move files out to EFS & edit HTML ###
 	
 	mkdir "$EFS"/"$run_number"/"$client"
