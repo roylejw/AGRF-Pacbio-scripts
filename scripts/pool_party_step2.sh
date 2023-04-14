@@ -13,9 +13,9 @@ while read client || [[ $client ]]; do
 	cd "$client"
 	rm report_"$client"_Analysis/*
 	if [[ "$skipnb" == "yes" ]]; then
-		nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --skip_nb true -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
+		nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --skip_nb true --vsearch_db /mnt/efs/fs1/pb-16S-nf/databases/silva-138-99-seqs.qza --vsearch_tax /mnt/efs/fs1/pb-16S-nf/databases/silva-138-99-tax.qza -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
 	else
-		nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
+		nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --vsearch_db /mnt/efs/fs1/pb-16S-nf/databases/silva-138-99-seqs.qza --vsearch_tax /mnt/efs/fs1/pb-16S-nf/databases/silva-138-99-tax.qza -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' -resume
 	fi
 	
 	### Create Analysis Directory, move files out to EFS & edit HTML ###
