@@ -56,6 +56,56 @@ if [ "$format" == "bam" ]; then
 	conda deactivate
 fi
 
+if [ "$format" == "fastq.gz" ]; then
+	source ~/miniconda3/etc/profile.d/conda.sh
+
+	if [ "$cells" == 1 ]; then
+		gunzip "$hifi1"."$format"
+		mv "$hifi1".fastq combined.fastq
+	fi
+	
+	if [ "$cells" == 2 ]; then
+		gunzip "$hifi1"."$format"
+		gunzip "$hifi2"."$format"
+		cat "$hifi1".fastq "$hifi2".fastq > combined.fastq
+	fi
+	
+	if [ "$cells" == 3 ]; then
+		gunzip "$hifi1"."$format"
+		gunzip "$hifi2"."$format"
+		gunzip "$hifi3"."$format"
+		cat "$hifi1".fastq "$hifi2".fastq "$hifi3".fastq > combined.fastq
+	fi
+	
+	if [ "$cells" == 4 ]; then
+		gunzip "$hifi1"."$format"
+		gunzip "$hifi2"."$format"
+		gunzip "$hifi3"."$format"
+		gunzip "$hifi4"."$format"
+		cat "$hifi1".fastq "$hifi2".fastq "$hifi3".fastq "$hifi4".fastq> combined.fastq
+	fi
+fi
+
+if [ "$format" == "fastq" ]; then
+	source ~/miniconda3/etc/profile.d/conda.sh
+
+	if [ "$cells" == 1 ]; then
+		mv "$hifi1".fastq combined.fastq
+	fi
+	
+	if [ "$cells" == 2 ]; then
+		cat "$hifi1".fastq "$hifi2".fastq > combined.fastq
+	fi
+	
+	if [ "$cells" == 3 ]; then
+		cat "$hifi1".fastq "$hifi2".fastq "$hifi3".fastq > combined.fastq
+	fi
+	
+	if [ "$cells" == 4 ]; then
+		cat "$hifi1".fastq "$hifi2".fastq "$hifi3".fastq "$hifi4".fastq> combined.fastq
+	fi
+fi
+
 mkdir /mnt/efs/fs2/output/hifiasm_"$sample"
 cd /mnt/efs/fs2/output/hifiasm_"$sample"
 
