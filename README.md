@@ -5,11 +5,11 @@
 <br />
 <div align="center">
   <a href="https://www.agrf.org.au">
-    <img src="logos/logo.png" alt="Logo" width="100" height="100">
+    <img src="logos/logo.png" alt="Logo" width="110" height="100">
   </a>
   &nbsp;
   <a href="https://www.pacb.com">
-    <img src="logos/pacbio-logo.PNG" alt="Logo" width="140" height="80">
+    <img src="logos/pacbio-logo.PNG" alt="Logo" width="150" height="80">
   </a>
 </div>
 
