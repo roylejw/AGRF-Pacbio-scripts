@@ -292,10 +292,10 @@ if [[ "$job_type" == 3 ]] ; then
 		mkdir /mnt/efs/fs2/pool_party/"$run_number"
 	fi
 	
-	echo "What is the filename of your HiFi data? Do not include the type (bam, fastq etc)!
+	echo "What is the filename of your HiFi data? Do not include the type (bam, fastq etc)!"
 	read -r filename
 	
-	echo "What is the format of your data? bam, or fastq.gz?
+	echo "What is the format of your data? bam, or fastq.gz?"
 	read -r format
 	
 	MAX_TRIES=0
