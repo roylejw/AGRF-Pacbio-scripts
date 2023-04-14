@@ -17,6 +17,8 @@ cp "$resources"/"$barcode".fasta .
 
 ### Run lima ###
 
+echo "Running Lima (and converting bam to fastq if required)."
+
 if [ "$barcode" == "isoseq" ];
 	then
 		conda activate lima
