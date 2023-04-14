@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 ### Housekeeping variables - no need to change ###
 storage="/mnt/efs/fs2/output"
 resources="/home/ubuntu/AGRF-Pacbio-scripts/resources"
@@ -44,6 +43,7 @@ fi
 ### Create directory, format and rename demultiplexed samples ###
 
 if [ ! -d "$storage"/"$outname"/Demultiplexed ]; then
+	mkdir "$storage"/"$outname"
 	mkdir "$storage"/"$outname"/Demultiplexed
 fi
 
@@ -51,7 +51,7 @@ mkdir temp
 mv demux.bc* temp/.
 cd temp
 cp ../barcode-sample.csv .
-rename demux.bc bc *
+rename 's/\demux.bc/\bc/' *
 
 sed 's/"//g' barcode-sample.csv | while IFS=, read orig new; do mv "$orig"."$format" "$new"."$format"; done
 cp ../demux.lima.summary "$storage"/"$outname"/Demultiplexed/.
