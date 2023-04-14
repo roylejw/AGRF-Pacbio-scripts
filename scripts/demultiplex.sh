@@ -51,7 +51,7 @@ mkdir temp
 mv demux.bc* temp/.
 cd temp
 cp ../barcode-sample.csv .
-rename 's/\demux.bc/\bc/' *
+rename 's/demux.bc/bc/' *
 
 sed 's/"//g' barcode-sample.csv | while IFS=, read orig new; do mv "$orig"."$format" "$new"."$format"; done
 cp ../demux.lima.summary "$storage"/"$outname"/Demultiplexed/.
