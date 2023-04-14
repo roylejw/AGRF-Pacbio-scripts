@@ -312,9 +312,9 @@ if [[ "$job_type" == 3 ]] ; then
 	fi
 	
 	echo "Checking to see if you have synced in your details.tsv and contracts.txt..."
-	sleep(1)
+	sleep 1
 	echo "..."
-	sleep(2)
+	sleep 2
 	
 	if [ -e /home/ubuntu/contracts.txt ]; then
 		echo "List of contracts exists."
