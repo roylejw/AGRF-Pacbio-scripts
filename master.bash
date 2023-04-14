@@ -281,3 +281,86 @@ if [[ "$job_type" == 2 ]] ; then
 	echo "Demultiplex complete".
 fi
 
+if [[ "$job_type" == 3 ]] ; then
+	echo "You have selected "$job_type". Please rsync/filezilla all files directly into the home directory (/home/ubuntu)."
+	echo "Reminder - Pool party analysis requires two instances - one ubuntu & one AWS EC2. Make sure you git clone me into both!"
+	echo "Please tell me the name of the batch folder you want the output to be called (ie. run_1, run_2, etc)."
+	read -r run_number
+	
+	if [ ! -d /mnt/efs/fs2/pool_party/"$run_number" ]; then
+		mkdir /mnt/efs/fs2/pool_party/"$run_number"
+	fi
+	
+	echo "What is the filename of your HiFi data? Do not include the type (bam, fastq etc)!
+	read -r filename
+	
+	echo "What is the format of your data? bam, or fastq.gz?
+	read -r format
+	
+	MAX_TRIES=0
+	if [ ! -e /home/ubuntu/"$filename"."$format" ]; then
+		if [ "$MAX_TRIES" == 3 ]; then 
+			echo "Too many incorrect tries. Check your files and run me again!"
+			exit 1
+		fi
+		echo "File "$filename"."$format" not found. Try again."
+		MAX_TRIES=$((MAX_TRIES + 1))
+		echo "What is the filename of the sequencing file? Do not include its filetype."
+		read -r filename
+		echo "What is the format of the sequencing file? Options are bam or fastq.gz."
+		read -r format	
+	fi
+	
+	echo "Checking to see if you have synced in your details.tsv and contracts.txt..."
+	sleep(1)
+	echo "..."
+	sleep(2)
+	
+	if [ -e /home/ubuntu/contracts.txt ]; then
+		echo "List of contracts exists."
+	elif [ ! -e /mnt/efs/fs2/pool_party/"$run_number"/contracts.txt ]; then
+		echo "Error - contract list not present."
+		echo "Verification failed."
+		exit 1
+	fi
+	if [ -e /home/ubuntu/details.tsv ]; then
+		echo "Details file exists."
+	elif [ ! -e /home/ubuntu/details.tsv ]; then
+		echo "Error - details tsv not present."
+		echo "Verification failed."
+		exit 1
+	fi
+	echo "Check complete, ready for blastoff."
+	
+	mv contracts.txt /mnt/efs/fs2/pool_party/"$run_number"/.
+	mv details.tsv /mnt/efs/fs2/pool_party/"$run_number"/.
+	mv "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/.
+	source ~/AGRF-Pacbio-scripts/scripts/pool_party_step1.sh
+fi
+
+if [[ "$job_type" == 4 ]] ; then
+	echo "You have selected "$job_type". Good news is I don't need much info from you."
+	echo "Please tell me the name of the batch folder you gave in stage 1."
+	read -r run_number
+	
+	if [ ! -d /mnt/efs/fs2/pool_party/"$run_number" ]; then
+		MAX_TRIES=0
+		if [ "$MAX_TRIES" == 3 ]; then 
+			echo "Too many incorrect tries. Check your files and run me again!"
+			exit 1
+		fi
+		echo "Batch folder not found. Try again."
+		MAX_TRIES=$((MAX_TRIES + 1))
+		echo "Please tell me the name of the batch folder you gave in stage 1."
+		read -r run_number
+	fi
+	
+	echo "Please tell me the AWS instance ID so I can turn the head node off when complete."
+	read -r instance
+	
+	echo "Last question - is this batch complex enough to skip the NB classification? IE is it soil?
+	read -r skipnb
+	
+	echo "Running stage two, please hold (for god knows how long).
+	
+	source ~/AGRF-Pacbio-scripts/scripts/pool_party_step2.sh
