@@ -48,7 +48,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of the first file?"
 			read -r hic1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hic1".* ]; then
+			if [ ! -e /home/ubuntu/"$hic1".fastq.gz ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -60,7 +60,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of the second file?"
 			read -r hic2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hic2".* ]; then
+			if [ ! -e /home/ubuntu/"$hic2".fastq.gz ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -70,6 +70,10 @@ if [[ "$job_type" == 1 ]] ; then
 				read -r hic2
 			fi
 		fi
+	
+	# Do we need to convert the files? Or unzip them?
+	echo "Are you files bam, or fastq? Please note they all need to be the same!"
+	read -r format
 	
 	# Hifi cells 
 	echo "How many cells of HiFi data are we assembling today?"
@@ -81,7 +85,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -99,7 +103,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -112,7 +116,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi2"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -130,7 +134,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -143,7 +147,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi2"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -156,7 +160,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 3?"
 			read -r hifi3	
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi3".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi3"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -174,7 +178,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -187,7 +191,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi2"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -200,7 +204,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 3?"
 			read -r hifi3	
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi3".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi3"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -212,7 +216,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 4?"
 			read -r hifi4
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi4".* ]; then
+			if [ ! -e /home/ubuntu/"$hifi4"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -224,10 +228,7 @@ if [[ "$job_type" == 1 ]] ; then
 		fi
 	MAX_TRIES=0
 
-	# Do we need to convert the files? Or unzip them?
-	echo "Are you files bam, or fastq? Please note they all need to be the same!"
-	read -r format
-	
+
 	# Option for Hifiasm assembly - affects some metrics.
 	echo "What is your estimated genome size? Type a number + g for gigabase or m for megabase (ie 3g, 300m, etc)"
 	read -r genome_size
@@ -358,10 +359,10 @@ if [[ "$job_type" == 4 ]] ; then
 	echo "Please tell me the AWS instance ID so I can turn the head node off when complete."
 	read -r instance
 	
-	echo "Last question - is this batch complex enough to skip the NB classification? IE is it soil?
+	echo "Last question - is this batch complex enough to skip the NB classification? IE is it soil?"
 	read -r skipnb
 	
-	echo "Running stage two, please hold (for god knows how long).
+	echo "Running stage two, please hold (for god knows how long)."
 	
 	source ~/AGRF-Pacbio-scripts/scripts/pool_party_step2.sh
 fi
