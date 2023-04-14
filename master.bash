@@ -364,3 +364,4 @@ if [[ "$job_type" == 4 ]] ; then
 	echo "Running stage two, please hold (for god knows how long).
 	
 	source ~/AGRF-Pacbio-scripts/scripts/pool_party_step2.sh
+fi
