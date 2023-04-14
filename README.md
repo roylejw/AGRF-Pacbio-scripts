@@ -121,7 +121,6 @@ To do.
 ## <h3 align="center">Contact</h3>
 
 Jack Royle <br />
-Twitter - [@Royleity](https://twitter.com/Royleity)  <br />
 Email: jack.royle@agrf.org.au   <br />    [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
