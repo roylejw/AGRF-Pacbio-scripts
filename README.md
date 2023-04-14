@@ -89,6 +89,7 @@ The input for this job can be either bam, fastq.gz or fastq.
 To run a pool party job, first ensure you have the PacBio tools AMI AND Nextflow AMI running. The Nextflow AMI needs to be running on an m5.xlarge on demand instance. You will need the following files in the home directory to start a pool party run:
 - The sequencing file (bam, fastq.gz or fastq all acceptable inputs. **Must be one file**)
 - A filled-in copy of the details.tsv found in the resources folder. Must be named details.tsv
+  - To use the pool column correctly - give them unique names (I use sample names) if sequence depth is high, or they are complex samples (soil). If non-complex samples, or low depth, they can be pooled by the condition given to us (match the metadata column). 
 - A text file with each of the contract IDs you wish to analyse in this run. Must be named contracts.txt
 
 If you know there is a complex batch within the pool, ensure you analyze it seperately. Give it a different batch name, contracts.txt and details.tsv for complex batches, and you can run them as a separate batch in step two from the same combined Hifi data. 
