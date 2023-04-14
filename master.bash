@@ -359,7 +359,8 @@ if [[ "$job_type" == 4 ]] ; then
 	echo "Please tell me the AWS instance ID so I can turn the head node off when complete."
 	read -r instance
 	
-	echo "Last question - is this batch complex enough to skip the NB classification? IE is it soil?"
+	echo "Last question - is this batch complex enough to skip the NB classification? IE is it soil - yes or no?"
+	echo "Note that this affects ALL batches in this run. Isolate complex batches from the run and process with step 1 separately if this is mixed."
 	read -r skipnb
 	
 	echo "Running stage two, please hold (for god knows how long)."
