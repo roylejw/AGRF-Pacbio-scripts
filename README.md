@@ -13,7 +13,7 @@
   </a>
 </div>
 
-<h3 align="center">An AGRF repository for manipulating, assembling and analysis HiFi data in AWS</h3>
+<h3 align="center">An AGRF repository for manipulating, assembling and analysing HiFi data in AWS</h3>
 
 <!-- GETTING STARTED -->
 
