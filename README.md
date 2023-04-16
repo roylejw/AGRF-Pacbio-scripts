@@ -61,6 +61,26 @@ Take note that your username will be different - The Pacbio tools image uses 'ub
 
 <!-- USAGE EXAMPLES -->
 ## <h3 align="center">How To Run</h3>
+### <h3 align="center">Rsyncing your data across to the AWS instance</h3>
+
+Before running any job, you need to get the data onto the AWS instance. To do this, you will need:
+- Your data on our local server. Ideally in one folder but you can do this per file if you want. 
+- A running AWS instance, and its name. 
+  - The name will look something like this: ec2-12-345-678-910.ap-southeast-2.compute.amazonaws.com
+
+To rsync your data, log into our local server and run this command, replacing quoted variables with relevant information:
+
+```sh
+ rsync -av --progress -e 'ssh -i /home/smrtanalysis/amazon_ssh/EC2.pem' "$PATH/TO/YOUR/FILENAME/file".bam "$USERNAME"@"$AWS-INSTANCE-NAME":/home/"$USERNAME"
+ ```
+ - "$USERNAME" will either be ubuntu or ec2-user, depending on your workflow
+ - AWS instance name can be found on AWS EC2 instances page
+ 
+Things to consider:
+- Giving a hard file name (eg. /opt/staging/CAGRF12345/reads.bam) will sync this file only
+- If you want to sync the contents of a folder but want them immediately compatible with the scripts, leave a trailing ```/``` (eg. /opt/staging/CAGRF12345/). This will sync the contents directly into the home directory.
+- If you want to sync things from AWS back, flip the command (AWS path before local server path). 
+
 ### <h3 align="center">Job #1 - Hifiasm assembly</h3>
 
 To run an automated Hifiasm assembly, run the master script and select option 1. This will run a hifiasm assembly job with automatic QUAST and BUSCO QC. BUSCO is set to auto-linage assessment, through the ```auto-lineage-euk``` command. This automated script can handle up to 4 hifi cells at the moment, and requires either a bam, or fastq.gz input. The output is placed in AWS EFS storage, accessible at ```/mnt/efs/fs2/output```.
