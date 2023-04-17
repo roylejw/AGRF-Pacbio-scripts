@@ -85,11 +85,15 @@ Things to consider:
 
 To run an automated Hifiasm assembly, run the master script and select option 1. This will run a hifiasm assembly job with automatic QUAST and BUSCO QC. BUSCO is set to auto-linage assessment, through the ```auto-lineage-euk``` command. This automated script can handle up to 4 hifi cells at the moment, and requires either a bam, or fastq.gz input. The output is placed in AWS EFS storage, accessible at ```/mnt/efs/fs2/output```.
 
+Hifiasm is expecting 48 CPUs, so run this on an **on-demand, m5.12xlarge** instance. 
+
   ```sh
   bash AGRF-Pacbio-scripts/master.sh
   
   >1
   ```
+  
+ 
 ### <h3 align="center">Job #2 - Demultiplexing</h3>
 
 To run a demultiplex job, run the master script and select option 2. This will demultiplex your hifi data using Lima, rename it and place the output in AWS EFS storage, accessible at ```/mnt/efs/fs2/output``` as fastq files.
