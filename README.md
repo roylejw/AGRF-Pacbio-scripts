@@ -123,7 +123,9 @@ If you know there is a complex batch within the pool, ensure you analyze it sepe
   
   >3
   ```
-  
+
+All credit for the creation of the 16S Workflow goes to Khi Pin and the PacBio team. An original version of the pipeline [can be found here](https://github.com/PacificBiosciences/pb-16S-nf). The version of the main Nextflow workflow uploaded here (found in the resources folder) is edited specifically to work on AWS in our workspace.   
+
 ### <h3 align="center">Job #4 - Pool party pt. 2</h3>
 
 Simply clone in this repo and run job #4. If these are non-complex batches, answer 'no' to the NB classification question. If these are all complex, answer yes and it will skip the Naive-Bayes classification step.
