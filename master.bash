@@ -240,7 +240,7 @@ if [[ "$job_type" == 1 ]] ; then
 	# Time to run the assembly
 	echo "Time to run the job. Come back in ~14 hours or so. Please tell me you put me in a screen..."
 	
-	source ~/AGRF-Pacbio-scripts/scripts/assembly.sh	
+	source ~/home/ubuntu/PacBio-related-scripts/scripts/assembly.sh	
 fi
 
 if [[ "$job_type" == 2 ]] ; then
@@ -278,7 +278,7 @@ if [[ "$job_type" == 2 ]] ; then
 	
 	echo "Running the demultiplex now."
 	
-	source ~/AGRF-Pacbio-scripts/scripts/demultiplex.sh
+	source ~/home/ubuntu/PacBio-related-scripts/scripts/demultiplex.sh
 	echo "Demultiplex complete".
 fi
 
@@ -336,7 +336,7 @@ if [[ "$job_type" == 3 ]] ; then
 	mv contracts.txt /mnt/efs/fs2/pool_party/"$run_number"/.
 	mv details.tsv /mnt/efs/fs2/pool_party/"$run_number"/.
 	mv "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/.
-	source ~/AGRF-Pacbio-scripts/scripts/pool_party_step1.sh
+	source ~/home/ubuntu/PacBio-related-scripts/scripts/pool_party_step1.sh
 fi
 
 if [[ "$job_type" == 4 ]] ; then
@@ -365,5 +365,5 @@ if [[ "$job_type" == 4 ]] ; then
 	
 	echo "Running stage two, please hold (for god knows how long)."
 	
-	source ~/AGRF-Pacbio-scripts/scripts/pool_party_step2.sh
+	source ~/home/ubuntu/PacBio-related-scripts/scripts/pool_party_step2.sh
 fi
