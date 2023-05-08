@@ -246,6 +246,7 @@ fi
 if [[ "$job_type" == 2 ]] ; then
 	
 	echo "You have selected "$job_type". Please rsync/filezilla all files directly into the home directory (/home/ubuntu)."
+	sleep 1
 	echo "What is the filename of the sequencing file? Do not include its filetype."
 	read -r filename
 	echo "What is the format of the sequencing file? Options are bam or fastq.gz."
@@ -285,6 +286,9 @@ fi
 if [[ "$job_type" == 3 ]] ; then
 	echo "You have selected "$job_type". Please rsync/filezilla all files directly into the home directory (/home/ubuntu)."
 	echo "Reminder - Pool party analysis requires two instances - one ubuntu & one AWS EC2. Make sure you git clone me into both!"
+	sleep 1
+	echo "If any batches are soil/complex samples, please run step 1 and step 2 for these in a seperate contracts/details setup!"
+	sleep 1
 	echo "Please tell me the name of the batch folder you want the output to be called (ie. run_1, run_2, etc)."
 	read -r run_number
 	
