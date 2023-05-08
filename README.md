@@ -130,6 +130,8 @@ All credit for the creation of the 16S Workflow goes to Khi Pin and the PacBio t
 
 Simply clone in this repo and run job #4. If these are non-complex batches, answer 'no' to the NB classification question. If these are all complex, answer yes and it will skip the Naive-Bayes classification step.
 
+Note: Right now the AWS CLI is not configured with the most up-to-date keys, so AWS Batch will not run. **Please see me for correct keys before running - this is temporary until I have time to fix the image.**
+
   ```sh
   bash AGRF-Pacbio-scripts/master.sh
   
