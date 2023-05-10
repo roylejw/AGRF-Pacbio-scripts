@@ -88,7 +88,7 @@ To run an automated Hifiasm assembly, run the master script and select option 1.
 Hifiasm is expecting 48 CPUs, so run this on an **on-demand, m5.12xlarge** instance. 
 
   ```sh
-  bash AGRF-Pacbio-scripts/master.sh
+  bash PacBio-related-scripts/master.bash
   
   >1
   ```
@@ -103,7 +103,7 @@ You must fill out the barcode csv (a template can be found in the resources fold
 The input for this job can be either bam, fastq.gz or fastq.
 
   ```sh
-  bash AGRF-Pacbio-scripts/master.sh
+  bash PacBio-related-scripts/master.bash
   
   >2
   ```  
@@ -119,7 +119,7 @@ To run a pool party job, first ensure you have the PacBio tools AMI AND Nextflow
 If you know there is a complex batch within the pool, ensure you analyze it seperately. Give it a different batch name, contracts.txt and details.tsv for complex batches, and you can run them as a separate batch in step two from the same combined Hifi data. 
 
   ```sh
-  bash AGRF-Pacbio-scripts/master.sh
+  bash PacBio-related-scripts/master.bash
   
   >3
   ```
@@ -133,7 +133,7 @@ Simply clone in this repo and run job #4. If these are non-complex batches, answ
 Note: Right now the AWS CLI is not configured with the most up-to-date keys, so AWS Batch will not run. **Please see me for correct keys before running - this is temporary until I have time to fix the image.**
 
   ```sh
-  bash AGRF-Pacbio-scripts/master.sh
+  bash PacBio-related-scripts/master.bash
   
   >4
   ```
