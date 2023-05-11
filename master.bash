@@ -337,9 +337,9 @@ if [[ "$job_type" == 3 ]] ; then
 	fi
 	echo "Check complete, ready for blastoff."
 	
-	mv contracts.txt /mnt/efs/fs2/pool_party/"$run_number"/.
-	mv details.tsv /mnt/efs/fs2/pool_party/"$run_number"/.
-	mv "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/.
+	cp contracts.txt /mnt/efs/fs2/pool_party/"$run_number"/.
+	cp details.tsv /mnt/efs/fs2/pool_party/"$run_number"/.
+	cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/.
 	source /home/ubuntu/PacBio-related-scripts/scripts/pool_party_step1.sh
 fi
 
