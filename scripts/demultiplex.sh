@@ -2,7 +2,7 @@
 
 ### Housekeeping variables - no need to change ###
 storage="/mnt/efs/fs2/output"
-resources="/home/ubuntu/AGRF-Pacbio-scripts/resources"
+resources="/home/ubuntu/PacBio-related-scripts/resources"
 
 # Source conda to start lima
 source ~/miniconda3/etc/profile.d/conda.sh
@@ -48,6 +48,7 @@ if [ ! -d "$storage"/"$outname"/Demultiplexed ]; then
 fi
 
 mkdir temp
+rm temp/*
 mv demux.bc* temp/.
 cd temp
 cp ../barcode-sample.csv .
