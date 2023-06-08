@@ -134,11 +134,8 @@ fi
 			conda activate lima
 			format=fastq
 			echo "Running Lima - started at" && date
-			start=`date +%M`
 			lima -j 6 --hifi-preset ASYMMETRIC --biosample-csv barcode-sample-16S.csv --split-named --output-missing-pairs "$EFS"/"$run_number"/"$filename"."$format" 16S.fasta demux."$format" 
-			end=`date +%M`
-			runtime=$((end-start))
-			echo "Finished Lima, time taken was: "$runtime""
+			echo "Finished Lima at" && date
 			
 			### Create directory, format and rename demultiplexed samples ###
 			echo "Reformatting demultiplexed samples and creating metadata files."
@@ -170,7 +167,6 @@ fi
 			cd "$TMPDIR"/"$client"
 			conda deactivate
 
-
 			# Metadata and sample tsv creation
 
 			awk -v client="$client" -F "\t" -vOFS='\t' '$3~client{print $2,$4,$5}' details.tsv > metadata_temp.tsv
@@ -197,27 +193,6 @@ fi
 			rm sample_headers_only.tsv
 			rm metadata_headers_only.tsv
 
-			## PB-16S workflow begins ###
-<<comment
-			#nextflow run /mnt/efs/fs1/pb-16S-nf/main3.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 37 --vsearch_cpu 37 -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp'
-
-			### Create Analysis Directory, move files out to EFS & edit HTML ###
-
-			cp -rL "$client"_Analysis/ "$EFS"/"$run_number"/"$client"/
-			mv "$client"_Analysis/ Analysis/
-			cd "$EFS"/"$run_number"/"$client"/Analysis/results
-			cp "$EFS"/../../fs1/resources/project_info.txt .
-			cp "$EFS"/../../fs1/resources/agrf_logo.txt .
-			head -n 3394 visualize_biom.html > top.html
-			sed -n '3395,3407p' visualize_biom.html > pre-info.html
-			sed -n '3408,3596p' visualize_biom.html > post-info.html
-			sed -i "s/ID: /ID: $client/g" project_info.txt
-			sed -i "s/date: /date: $(date)/g" project_info.txt
-			#sed -i "s/Client: /Client: $client/g" project_info.txt
-			cat top.html agrf_logo.txt pre-info.html project_info.txt post-info.html > report.html
-			rm pre-info* post-info* project_info* agrf_logo* top*
-			touch "$EFS"/"$run_number"/"$client"/run_complete
-comment
 		else
 
 			### Housekeeping just in case ###
@@ -257,34 +232,8 @@ comment
 			cd $TMPDIR
 			cat sample_headers_only.tsv sample2.tsv > sample.tsv
 			rm sample2.tsv
-
-
-			### PB-16S workflow begins ###
-<<comment
-			#nextflow run /mnt/efs/fs1/pb-16S-nf/main3.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 37 --vsearch_cpu 37 -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp'
-
-			### Create Analysis Directory, move files out to EFS & edit HTML ###
-
-			cp -rL "$client"_Analysis/ "$EFS"/"$run_number"/"$client"/
-			mv "$client"_Analysis/ Analysis/
-			cd "$EFS"/"$run_number"/"$client"/Analysis/results
-			cp "$EFS"/../../fs1/resources/project_info.txt .
-			cp "$EFS"/../../fs1/resources/agrf_logo.txt .
-			head -n 3394 visualize_biom.html > top.html
-			sed -n '3395,3407p' visualize_biom.html > pre-info.html
-			sed -n '3408,3596p' visualize_biom.html > post-info.html
-			sed -i "s/ID: /ID: $client/g" project_info.txt
-			sed -i "s/date: /date: $(date)/g" project_info.txt
-			#sed -i "s/Client: /Client: $client/g" project_info.txt
-			cat top.html agrf_logo.txt pre-info.html project_info.txt post-info.html > report.html
-			rm pre-info* post-info* project_info* agrf_logo* top*
-			touch "$EFS"/"$run_number"/"$client"/run_complete
-comment
 		fi
+		
 	echo ""$client" files are set-up."
 	done < contracts.txt
-
-script_end=`date`
-script_runtime=$((script_end-script_start))
-
-echo "Finished at "$script_end" minutes. Have a good day."
+echo "Finished! Have a good day."
