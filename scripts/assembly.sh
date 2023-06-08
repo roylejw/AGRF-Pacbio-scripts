@@ -4,13 +4,18 @@ cd ~
 
 if [ "$format" == "bam" ]; then
 	source ~/miniconda3/etc/profile.d/conda.sh
-	conda activate pbtools
+	if [ ! -d ~/miniconda3/envs/pbtk ]; then
+		cp /mnt/efs/fs1/conda_envs/pbtk.yml .
+		conda env create --file pbtk.yml
+	fi
+	
+	conda activate pbtk
 
 	if [ "$cells" == 1 ]; then
 		echo "Indexing "$hifi1" bam file."
 		pbindex "$hifi1"."$format"
 		echo "Converting bam's to fastq's"
-		bam2fastq -o "$sample" -u "$hifi1"
+		bam2fastq -o "$sample" -u "$hifi1"."$format"
 	fi
 	
 	if [ "$cells" == 2 ]; then
@@ -18,8 +23,8 @@ if [ "$format" == "bam" ]; then
 		pbindex "$hifi1"."$format"
 		pbindex "$hifi2"."$format"
 		echo "Converting bam's to fastq's"
-		bam2fastq -o "$sample"_1 -u "$hifi1"
-		bam2fastq -o "$sample"_2 -u "$hifi2"
+		bam2fastq -o "$sample"_1 -u "$hifi1"."$format"
+		bam2fastq -o "$sample"_2 -u "$hifi2"."$format"
 		cat "$sample"_1.fastq "$sample"_2.fastq > combined.fastq
 	fi
 	
@@ -29,9 +34,9 @@ if [ "$format" == "bam" ]; then
 		pbindex "$hifi2"."$format"
 		pbindex "$hifi3"."$format"
 		echo "Converting bam's to fastq's"
-		bam2fastq -o "$sample"_1 -u "$hifi1"
-		bam2fastq -o "$sample"_2 -u "$hifi2"
-		bam2fastq -o "$sample"_3 -u "$hifi3"
+		bam2fastq -o "$sample"_1 -u "$hifi1"."$format"
+		bam2fastq -o "$sample"_2 -u "$hifi2"."$format"
+		bam2fastq -o "$sample"_3 -u "$hifi3"."$format"
 		
 		cat "$sample"_1.fastq "$sample"_2.fastq "$sample"_3.fastq > combined.fastq
 	fi
@@ -46,10 +51,10 @@ if [ "$format" == "bam" ]; then
 		echo "Indexing "$hifi4""
 		pbindex "$hifi4"."$format"
 		echo "Converting bam's to fastq's"
-		bam2fastq -o "$sample"_1 -u "$hifi1"
-		bam2fastq -o "$sample"_2 -u "$hifi2"
-		bam2fastq -o "$sample"_3 -u "$hifi3"
-		bam2fastq -o "$sample"_4 -u "$hifi4"		
+		bam2fastq -o "$sample"_1 -u "$hifi1"."$format"
+		bam2fastq -o "$sample"_2 -u "$hifi2"."$format"
+		bam2fastq -o "$sample"_3 -u "$hifi3"."$format"
+		bam2fastq -o "$sample"_4 -u "$hifi4"."$format"
 		
 		cat "$sample"_1.fastq "$sample"_2.fastq "$sample"_3.fastq "$sample"_4.fastq > combined.fastq
 	fi
