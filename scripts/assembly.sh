@@ -111,7 +111,7 @@ if [ "$format" == "fastq" ]; then
 	fi
 fi
 
-if [ ! -e /home/ubuntu/combined.fasta ]; then
+if [ ! -e /home/ubuntu/combined.fastq ]; then
 	echo "Something went wrong with preparing the fastq file"
 	exit 1
 fi
