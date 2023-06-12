@@ -206,7 +206,7 @@ else
 
 	conda deactivate
 
-	if [ -e "$sample".hic.asm.hic.p_ctg.gfa ]; then
+	if [ -e "$sample".asm.bp.p_ctg.gfa ]; then
 		aws ec2 stop-instances --instance-ids "$instanceid"
 	fi
 fi
