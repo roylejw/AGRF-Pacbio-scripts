@@ -16,6 +16,7 @@ if [ "$format" == "bam" ]; then
 		pbindex "$hifi1"."$format"
 		echo "Converting bam's to fastq's"
 		bam2fastq -o "$sample" -u "$hifi1"."$format"
+		mv "$sample".fastq combined.fastq
 	fi
 	
 	if [ "$cells" == 2 ]; then
