@@ -122,7 +122,7 @@ cd /mnt/efs/fs2/output/hifiasm_"$sample"
 echo "Starting Hifiasm. Go get a coffee or 10."
 
 if [ "$hic_confirm" == "yes" ]; then
-	/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".hic.asm -t 48 --hg-size "$genome_size" --h1 /home/ubuntu/"$hic1" --h2 /home/ubuntu/"$hic2" /home/ubuntu/combined.fastq 2> "$sample".log
+	/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".hic.asm -t 48 --hg-size "$genome_size" --h1 /home/ubuntu/"$hic1".fastq.gz --h2 /home/ubuntu/"$hic2".fastq.gz /home/ubuntu/combined.fastq 2> "$sample".log
 	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.p_ctg.gfa > "$sample".primary.fasta
 	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.hap1.p_ctg.gfa > "$sample".hap1.fasta
 	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.hap2.p_ctg.gfa > "$sample".hap2.fasta
@@ -168,9 +168,9 @@ else
 
 	/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".asm -t 48 --hg-size "$genome_size" /home/ubuntu/combined.fastq 2> "$sample".log
 	
-	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.bp.p_ctg.gfa > "$sample".primary.fasta
-	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.bp.hap1.p_ctg.gfa > "$sample".hap1.fasta
-	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.bp.hap2.p_ctg.gfa > "$sample".hap2.fasta
+	awk '/^S/{print ">"$2;print $3}' "$sample".asm.bp.p_ctg.gfa > "$sample".primary.fasta
+	awk '/^S/{print ">"$2;print $3}' "$sample".asm.bp.hap1.p_ctg.gfa > "$sample".hap1.fasta
+	awk '/^S/{print ">"$2;print $3}' "$sample".asm.bp.hap2.p_ctg.gfa > "$sample".hap2.fasta
 
 	source ~/miniconda3/etc/profile.d/conda.sh
 
