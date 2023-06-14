@@ -36,6 +36,9 @@ MAX_TRIES=0
 
 if [[ "$job_type" == 1 ]] ; then
 	echo "You have selected "$job_type". Please rsync all files directly into the home directory (/home/ubuntu)"
+	echo "Here are your files currently in the home directory"
+	ls -l
+	echo ""
 	echo "What is the sample prefix you want to give to your assembly?"
 	read -r sample
 	
