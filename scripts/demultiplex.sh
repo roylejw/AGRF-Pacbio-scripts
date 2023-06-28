@@ -57,3 +57,4 @@ rename 's/demux.bc/bc/' *
 sed 's/"//g' barcode-sample.csv | while IFS=, read orig new; do mv "$orig"."$format" "$new"."$format"; done
 cp ../demux.lima.summary "$storage"/"$outname"/Demultiplexed/.
 cp *."$format" "$storage"/"$outname"/Demultiplexed/.
+rm bc*."$format" "$storage"/"$outname"/Demultiplexed/
