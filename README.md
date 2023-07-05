@@ -152,7 +152,16 @@ The output will be places in the EFS pool party output, separated by contracts n
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### <h3 align="center">Handy one-liners that might come in handy</h3>
 
+Iteratively move into SMRTlink job folders, compress & rename with the job ID for easy syncing to local storage (jobs.txt is a list of jobID files in SMRTLInk (ie. 000000130):
+```sh
+mkdir temp && cat jobs.txt | while read f || [[ -n $f ]]; do cd "$f"; ls -la; tar -hcvf "$f".tar.gz outputs ; mv "$f".tar.gz ../temp/. ; cd ../ ; done
+cd temp/
+rename 0000000 '' *
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 ## <h3 align="center">Contact</h3>
