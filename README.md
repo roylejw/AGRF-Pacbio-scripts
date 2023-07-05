@@ -15,6 +15,27 @@
 
 <h3 align="center">An AGRF repository for manipulating, assembling and analysing HiFi data in AWS</h3>
 
+Table of contents
+=================
+
+<!--ts-->
+   * [Getting Started](#Getting Started)
+   * [Usage](#usage)
+      * [STDIN](#stdin)
+      * [Local files](#local-files)
+      * [Remote files](#remote-files)
+      * [Multiple files](#multiple-files)
+      * [Combo](#combo)
+      * [Auto insert and update TOC](#auto-insert-and-update-toc)
+      * [GitHub token](#github-token)
+      * [TOC generation with Github Actions](#toc-generation-with-github-actions)
+   * [Tests](#tests)
+   * [Dependency](#dependency)
+   * [Docker](#docker)
+     * [Local](#local)
+     * [Public](#public)
+<!--te-->
+
 <!-- GETTING STARTED -->
 
 ## <h3 align="center">Getting Started</h3>
@@ -152,7 +173,7 @@ The output will be places in the EFS pool party output, separated by contracts n
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### <h3 align="center">Handy one-liners that might come in handy</h3>
+### <h3 align="center">One-liners that might come in handy</h3>
 
 Iteratively move into SMRTlink job folders, compress & rename with the job ID for easy syncing to local storage (jobs.txt is a list of jobID files in SMRTLInk (ie. 000000130):
 ```sh
