@@ -19,21 +19,17 @@ Table of contents
 =================
 
 <!--ts-->
-   * [Getting Started](#Getting-Started)
-   * [Usage](#usage)
-      * [STDIN](#stdin)
-      * [Local files](#local-files)
-      * [Remote files](#remote-files)
-      * [Multiple files](#multiple-files)
-      * [Combo](#combo)
-      * [Auto insert and update TOC](#auto-insert-and-update-toc)
-      * [GitHub token](#github-token)
-      * [TOC generation with Github Actions](#toc-generation-with-github-actions)
-   * [Tests](#tests)
-   * [Dependency](#dependency)
-   * [Docker](#docker)
-     * [Local](#local)
-     * [Public](#public)
+* [Getting Started](#Getting-Started)
+  * [Prerequisites](#Prerequisites)
+  * [Installation](#Installation)
+* [How to Run](#How-to-run)
+  * [Rsync your data](#rsyncing-your-data-across-to-the-aws-instance)
+  * [Hifiasm](#job-1---hifiasm-assembly)
+  * [Demultiplexing](#job-2---demultiplexing)
+  * [Pool Party step #1](#job-3---pool-party-pt-1)
+  * [Pool Party step #2](#job-4---pool-party-pt-2)
+* [One liners that you might find useful](#one-liners-that-might-come-in-handy)
+
 <!--te-->
 
 <!-- GETTING STARTED -->
