@@ -19,7 +19,7 @@ Table of contents
 =================
 
 <!--ts-->
-   * [Getting Started](#Getting Started)
+   * [Getting Started](#Getting-Started)
    * [Usage](#usage)
       * [STDIN](#stdin)
       * [Local files](#local-files)
