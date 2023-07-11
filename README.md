@@ -178,6 +178,19 @@ cd temp/
 rename 0000000 '' *
 ```
 
+If you find weird characters in the file names (eg. '$\r ' or \n's), use this to remove them (replace the character with whatever the file is:
+```sh
+find -name $'*\r*' -exec rename  $'s|\r| |g' '{}' \;
+```
+
+To then remove any spaces in the filename afterwards:
+```sh
+			for file in *\ *; do
+				new_file=${file// /}
+				mv "$file" "$new_file"
+			done
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
