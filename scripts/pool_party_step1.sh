@@ -2,7 +2,10 @@
 
 echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any issues."
 source ~/miniconda3/etc/profile.d/conda.sh
-
+if [ ! -d ~/miniconda3/envs/pbtk ]; then
+	cp /mnt/efs/fs1/conda_envs/pbtk.yml .
+	conda env create --file pbtk.yml
+  fi
 
 script_start=`date +%M`
 
@@ -106,7 +109,7 @@ fi
 				if [ ! -f "$EFS"/"$run_number"/"$filename"."$format".pbi ]; then
 					echo "Indexing bam file."
 					cd "$EFS"/"$run_number"
-					conda activate pbtools
+					conda activate pbtk
 					pbindex "$filename"."$format"
 					cd "$TMPDIR"/"$client"
 					conda deactivate
@@ -114,7 +117,7 @@ fi
 				if [ ! -f "$EFS"/"$run_number"/"$filename".fastq ]; then
 					echo "Converting Bam to Fastq."
 					cd "$EFS"/"$run_number"
-					conda activate pbtools
+					conda activate pbtk
 					bam2fastq -u -o "$filename" "$filename"."$format"
 					format=fastq
 					conda deactivate
