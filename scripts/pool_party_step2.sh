@@ -41,5 +41,7 @@ while read client || [[ $client ]]; do
 	cd "$TMPDIR"
 done < "$contracts"
 
+aws s3 cp --recursive "$EFS"/"$run_number"/ s3://16s-out/"$run_number"/
+
 aws ec2 stop-instances --instance-ids "$instance"
 
