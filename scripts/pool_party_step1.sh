@@ -1,6 +1,48 @@
 #!/bin/sh
 
 echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any issues."
+source ~/miniconda3/etc/profile.d/conda.sh
+if [ ! -d ~/miniconda3/envs/pbtk ]; then
+	cp /mnt/efs/fs1/conda_envs/pbtk.yml .
+	conda env create --file pbtk.yml
+  fi
+
+script_start=`date +%M`
+
+if [ "$verify" == "verify" ]; then
+	if [ -d /mnt/efs/fs2/pool_party/"$run_number" ]; then
+		echo "Run folder exists."
+	elif [ ! -d /mnt/efs/fs2/pool_party/"$run_number" ]; then
+		echo "Error - run folder not present."
+		echo "Verification failed."
+		exit 1
+	fi
+
+	if [ -e /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format" ]; then
+		echo "CCS file exists."
+	elif [ ! -e /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format" ]; then
+		echo "Error - CCS file not present."
+		echo "Verification failed."
+		exit 1
+	fi
+
+	if [ -e /mnt/efs/fs2/pool_party/"$run_number"/contracts.txt ]; then
+		echo "List of contracts exists."
+	elif [ ! -e /mnt/efs/fs2/pool_party/"$run_number"/contracts.txt ]; then
+		echo "Error - contract list not present."
+		echo "Verification failed."
+		exit 1
+	fi
+
+	if [ -e /mnt/efs/fs2/pool_party/"$run_number"/details.tsv ]; then
+		echo "Details file exists."
+	elif [ ! -e /mnt/efs/fs2/pool_party/"$run_number"/details.tsv ]; then
+		echo "Error - details tsv not present."
+		echo "Verification failed."
+		exit 1
+	fi
+	exit 1
+fi
 
 	cd /mnt/efs/fs2/pool_party/"$run_number"
 	echo "Dos2Unix'ing the input files."
@@ -10,6 +52,7 @@ echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any iss
 	while read client || [[ $client ]]; do
 		echo "Setting up "$client". Time started is" && date
 		
+
 		### Housekeeping - no need to change ###
 		EFS="/mnt/efs/fs2/pool_party"
 		PC=PC
@@ -66,18 +109,18 @@ echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any iss
 				if [ ! -f "$EFS"/"$run_number"/"$filename"."$format".pbi ]; then
 					echo "Indexing bam file."
 					cd "$EFS"/"$run_number"
-					mamba activate pbtk
+					conda activate pbtk
 					pbindex "$filename"."$format"
 					cd "$TMPDIR"/"$client"
-					mamba deactivate
+					conda deactivate
 				fi
 				if [ ! -f "$EFS"/"$run_number"/"$filename".fastq ]; then
 					echo "Converting Bam to Fastq."
 					cd "$EFS"/"$run_number"
-					mamba activate pbtk
+					conda activate pbtk
 					bam2fastq -u -o "$filename" "$filename"."$format"
 					format=fastq
-					mamba deactivate
+					conda deactivate
 					cd "$TMPDIR"/"$client"
 				fi
 			fi
@@ -91,8 +134,7 @@ echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any iss
 				cd "$TMPDIR"/"$client"
 			fi
 			
-			mamba activate pbtk
-			mamba install -c bioconda -y lima
+			conda activate lima
 			format=fastq
 			echo "Running Lima - started at" && date
 			lima -j 6 --hifi-preset ASYMMETRIC --biosample-csv barcode-sample-16S.csv --split-named --output-missing-pairs "$EFS"/"$run_number"/"$filename"."$format" 16S.fasta demux."$format" 
@@ -159,7 +201,7 @@ echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any iss
 			### Housekeeping just in case ###
 
 			cd "$TMPDIR"/"$client"
-			mamba deactivate
+			conda deactivate
 
 			# Metadata and sample tsv creation
 
@@ -197,5 +239,4 @@ echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any iss
 		
 	echo ""$client" files are set-up."
 	done < contracts.txt
-
-echo "Finished demultiplexing!"
+echo "Finished! Have a good day."
