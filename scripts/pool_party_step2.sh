@@ -15,7 +15,7 @@ while read client || [[ $client ]]; do
 	if [[ "$skipnb" == "yes" ]]; then
 		nextflow run /mnt/efs/fs1/pb-16S-nf-v0.7/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --skip_nb true -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' --downsample 100000 -resume
 	else
-		nextflow run /mnt/efs/fs1/new_16s/pb-16S-nf-v0.7/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' --downsample 100000 -resume
+		nextflow run /mnt/efs/fs1/pb-16S-nf-v0.7/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 -profile docker --outdir "$client"_Analysis -bucket-dir 's3://16s-pipeline/temp' --downsample 100000 -resume
 	fi
 	
 	### Create Analysis Directory, move files out to EFS & edit HTML ###
