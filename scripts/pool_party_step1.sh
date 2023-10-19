@@ -78,9 +78,22 @@ fi
 		cp "$EFS"/../../fs1/resources/sample_headers_only.tsv .
 		cp "$EFS"/../../fs1/resources/metadata_headers_only.tsv .
 
-		# Check and remove spaces from client submitted sample names
+		# Check and remove spaces from client submitted sample names, and all other columns - probably super inefficient but IDC
+  
 		mv details.tsv details2.tsv
 		awk -F "\t" '{gsub(/ /,"",$2); print}' OFS="\t" details2.tsv > details.tsv
+  		rm details2.tsv
+  		mv details.tsv details2.tsv
+  		awk -F "\t" '{gsub(/ /,"",$1); print}' OFS="\t" details2.tsv > details.tsv
+    		rm details2.tsv
+      		mv details.tsv details2.tsv
+  		awk -F "\t" '{gsub(/ /,"",$3); print}' OFS="\t" details2.tsv > details.tsv
+    		rm details2.tsv
+      		mv details.tsv details2.tsv
+ 	 	awk -F "\t" '{gsub(/ /,"",$4); print}' OFS="\t" details2.tsv > details.tsv
+    		rm details2.tsv
+      		mv details.tsv details2.tsv
+ 		awk -F "\t" '{gsub(/ /,"",$5); print}' OFS="\t" details2.tsv > details.tsv
 		rm details2.tsv
 
 		# Make client project directory in EFS
