@@ -171,12 +171,28 @@ The output will be places in the EFS pool party output, separated by contracts n
 
 ### <h3 align="center">One-liners that might come in handy</h3>
 
-Iteratively move into SMRTlink job folders, compress & rename with the job ID for easy syncing to local storage (jobs.txt is a list of jobID files in SMRTLInk (ie. 000000130):
+Iteratively move into SMRTlink job folders, compress & rename with the job ID for easy syncing to local storage (jobs.txt is a list of jobID files in SMRTLInk (ie. 000000130). Then, on our server, name them per the client sample ID, link their hifi data, and rename the data. As well as the jobs.txt file, you will need a list of edited job ID (eg. 601) + name of sample (eg. CAGRF12345_Assembly1).
+
 ```sh
+cd /pacbio-root/software/pacbio-software/smrtlink/userdata/jobs_root/0000/0000000
+rm -rf temp/
+rm jobs.txt
+nano jobs.txt ##(and right-click paste the column of job IDs [easiest in excel])##
 mkdir temp && cat jobs.txt | while read f || [[ -n $f ]]; do cd "$f"; ls -la; tar -hcvf "$f".tar.gz outputs ; mv "$f".tar.gz ../temp/. ; cd ../ ; done
 cd temp/
 rename 0000000 '' *
+
+## Open new putty terminal, connect to Bris server
+
+#CAGRF needs to be replaced with your code#
+mkdir /opt/staging/CAGRF/Assemblies && cd /opt/staging/CAGRF/Assemblies
+rsync -av --progress -e 'ssh -i /home/smrtanalysis/amazon_ssh/smrtlink.pem' ec2-user@ec2-13-237-108-186.ap-southeast-2.compute.amazonaws.com:/pacbio-root/software/pacbio-software/smrtlink/userdata/jobs_root/0000/0000000/temp .
+nano rename.txt ##(and right-click paste the column 1 (Job IDs) + column 2 (sample name - eg CAGRF12345_Assembly1 )##
+cat rename.txt | while IFS=$'\t', read orig new; do mv "$orig".tar.gz "$new".tar.gz; done
+
 ```
+
+
 
 If you find weird characters in the file names (eg. '$\r ' or \n's), use this to remove them (replace the character with whatever the file is:
 ```sh
