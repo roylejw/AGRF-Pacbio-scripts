@@ -293,14 +293,16 @@ if [[ "$job_type" == 3 ]] ; then
 	echo "If any batches are soil/complex samples, please run step 1 and step 2 for these in a seperate contracts/details setup!"
 	sleep 1
 	echo "Please tell me the name of the batch folder you want the output to be called (ie. run_1, run_2, etc)."
-	read -r run_number
+	ls /mnt/efs/fs2/pool_party
+ 	read -r run_number
 	
 	if [ ! -d /mnt/efs/fs2/pool_party/"$run_number" ]; then
 		mkdir /mnt/efs/fs2/pool_party/"$run_number"
 	fi
 	
 	echo "What is the filename of your HiFi data? Do not include the type (bam, fastq etc)!"
-	read -r filename
+	ls -la
+ 	read -r filename
 	
 	echo "What is the format of your data? bam, or fastq.gz?"
 	read -r format
