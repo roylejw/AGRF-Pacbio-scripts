@@ -10,6 +10,7 @@ threads=$3
 instance=$4
 hic_storage=/mnt/efs/fs2/input/pangenome/hic
 assembly=/mnt/efs/fs2/output/hifiasm_"$sample"/"$sample".primary.fasta
+home="$home"
 
 export sample
 export hic_number
@@ -17,6 +18,10 @@ export threads
 export instance
 export hic_storage
 export assembly
+export home
+
+sudo yum install -y amazon-efs-utils
+aws configure
 
 ## List of HiC reads for reference
 
@@ -32,41 +37,53 @@ export assembly
 #T1=Maddie-HiC-T1_S2_L001_R2_001.fastq.gz
 #W2_1=Maddie-HiC-W2_S1_L001_R1_001.fastq.gz
 #W2_2=Maddie-HiC-W2_S1_L001_R2_001.fastq.gz
-#MaddieJHiCHeadlandNS_S2_L001_R1_001.fastq.gz
-#MaddieJHiCHeadlandNS_S2_L001_R2_001.fastq.gz
+#H1_1=Maddie-HiC-NS_S2_L001_R1_001.fastq.gz
+#H1_2=Maddie-HiC-NS_S2_L001_R2_001.fastq.gz
 
-# Mount existing EFS storage to instance
+<< COMMENT
+# If instance is has SSD attached (m5ad spots), use this to attach them. Check the nvme names (can change between instance types), and change home variable to /data1 or /data2
 
-sudo yum install -y amazon-efs-utils
+sudo mkfs -t xfs /dev/nvme0n1
+sudo mkfs -t xfs /dev/nvme0n2
+
+sudo mkdir /data1
+sudo mkdir /data2
+
+sudo mount /dev/nvme1n1 /data1 && sudo chmod 777 /data1
+sudo mount /dev/nvme2n1 /data2 && sudo chmod 777 /data2
+COMMENT
+
+# Mount existing AGRF EFS storage to instance
+
 sudo mkdir /mnt/efs
-
-aws configure
-
 if [ ! -d /mnt/efs/fs2/ ]; then
 	sudo mkdir /mnt/efs/fs2
-	sudo mount -t efs -o tls fs-018fdbc24abe8afd5:/ /mnt/efs/fs2
 fi
+sudo mount -t efs -o tls fs-018fdbc24abe8afd5:/ /mnt/efs/fs2
 
 if [ ! -d /mnt/efs/fs1/ ]; then
 	sudo mkdir /mnt/efs/fs1
-	sudo mount -t efs -o tls fs-0d05585280ab96dd4:/ /mnt/efs/fs1
 fi
+sudo mount -t efs -o tls fs-0d05585280ab96dd4:/ /mnt/efs/fs1
 
-# Setup instance
+# Setup instance installs
 
 sudo yum install -y make git libxml2 libxml2-devel libxslt libxslt-devel glibc-devel gcc patch gcc-c++ perl git
 
-if [ ! -d /home/ec2-user/mambaforge ]; then
-	wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh -b
-	bash Mambaforge-Linux-x86_64.sh
+if [ ! -d "$home"/mambaforge ]; then
+	wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
+	bash Mambaforge-Linux-x86_64.sh -b
 fi
-source /home/ec2-user/mambaforge/bin/activate
+
+source "$home"/mambaforge/bin/activate
 eval "$(conda shell.bash hook)"
-source /home/ec2-user/mambaforge/etc/profile.d/mamba.sh
+source "$home"/mambaforge/etc/profile.d/mamba.sh
 
 ##Installing bwa-mem2 
 
-if [ ! -d /home/ec2-user/bwa-mem2 ]; then
+cd "$home"
+
+if [ ! -d "$home"/bwa-mem2 ]; then
 	git clone --recursive https://github.com/bwa-mem2/bwa-mem2
 	cd bwa-mem2
 	make
@@ -74,7 +91,7 @@ fi
 
 ##Install samtools
 
-if [ ! -d /home/ec2-user/mambaforge/envs/samtools ]; then
+if [ ! -d "$home"/mambaforge/envs/samtools ]; then
 	mamba create -n samtools
 	conda activate samtools
 	mamba install -c bioconda samtools -y
@@ -83,7 +100,7 @@ fi
 
 ## Installing Picard tools
 
- if [ ! -d /home/ec2-user/mambaforge/envs/picard ]; then
+ if [ ! -d "$home"/mambaforge/envs/picard ]; then
 	mamba create -n picard
 	conda activate picard
 	mamba install -c bioconda picard -y
@@ -92,7 +109,7 @@ fi
 
 # Mapping HiC to contig assemblies
 
-cd ~
+cd "$home"
 mkdir "$sample"
 cd "$sample"
 
@@ -113,24 +130,25 @@ samtools sort -@ "$threads" -O bam "$sample"_aligned.bam > "$sample"_aligned_sor
 cd ..
 cp -rp "$sample" /mnt/efs/fs2/input/pangenome/out_bwa/.
 
-aws ec2 stop-instances --instance-ids "$instance"
+#aws ec2 stop-instances --instance-ids "$instance"
 
 ## Picard ReadGroup editing & duplicate removal
 
 conda activate picard
 
-cd "$sample"
+cd "$home"/"$sample"
 
-java -Xmx30G -jar /home/ec2-user/mambaforge/envs/picard/share/picard-3.1.0-0/picard.jar AddOrReplaceReadGroups I="$sample"_aligned_sorted.bam O="$sample"_aligned.readgroup.bam ID="$sample" LB="$sample" SM="$sample" PL=ILLUMINA PU=none
+java -Xmx30G -jar "$home"/mambaforge/envs/picard/share/picard-3.1.0-0/picard.jar AddOrReplaceReadGroups I="$sample"_aligned_sorted.bam O="$sample"_aligned.readgroup.bam ID="$sample" LB="$sample" SM="$sample" PL=ILLUMINA PU=none
 
-java -Xmx90G -XX:-UseGCOverheadLimit -jar /home/ec2-user/mambaforge/envs/picard/share/picard-3.0.0/picard.jar MarkDuplicates I="$sample"_aligned.readgroup.bam O="$sample"_markdup.bam M=metrics.txt ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT REMOVE_DUPLICATES=TRUE 
+java -Xmx90G -XX:-UseGCOverheadLimit -jar "$home"/mambaforge/envs/picard/share/picard-3.0.0/picard.jar MarkDuplicates I="$sample"_aligned.readgroup.bam O="$sample"_markdup.bam M=metrics.txt ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT REMOVE_DUPLICATES=TRUE 
 
-cp -rp "$sample"_markedup.bam /mnt/efs/fs2/input/pangenome/out_bwa/.
+cp -rp "$sample"_markedup.bam /mnt/efs/fs2/input/pangenome/out_bwa/"$sample"/.
 
-aws ec2 stop-instances --instance-ids "$instance"
+#aws ec2 stop-instances --instance-ids "$instance"
 
 ### YAHS Scaffolding
 
+cd "$home"/"$sample"
 conda activate samtools
 samtools faidx "$assembly"
 cd ..
@@ -139,12 +157,13 @@ cd yahs
 make
 cd ../"$sample"
 ../yahs/yahs -o "$sample" "$assembly" "$sample"_markdup.bam 
-cp -rp "$sample"_scaffolds_final.* /mnt/efs/fs2/output/.
+mkdir /mnt/efs/fs2/output/"$sample"_scaffolds
+cp -rp "$sample"_scaffolds_final.* /mnt/efs/fs2/output/"$sample"_scaffolds/.
 
 ### QUAST report
 
-mamba install -y quast
-cd /mnt/efs/fs2/output/
+mamba install -c bioconda -y quast
+cd /mnt/efs/fs2/output/"$sample"_scaffolds
 quast --large --no-snps --plots-format png -t 48 "$sample"_scaffolds_final.fa
  
 
