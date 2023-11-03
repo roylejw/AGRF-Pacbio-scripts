@@ -43,8 +43,8 @@ aws configure
 << COMMENT
 # If instance is has SSD attached (m5ad spots), use this to attach them. Check the nvme names (can change between instance types), and change home variable to /data1 or /data2
 
-sudo mkfs -t xfs /dev/nvme0n1
-sudo mkfs -t xfs /dev/nvme0n2
+sudo mkfs -t xfs /dev/nvme1n1
+sudo mkfs -t xfs /dev/nvme2n1
 
 sudo mkdir /data1
 sudo mkdir /data2
@@ -130,21 +130,21 @@ samtools sort -@ "$threads" -O bam "$sample"_aligned.bam > "$sample"_aligned_sor
 cd ..
 cp -rp "$sample" /mnt/efs/fs2/input/pangenome/out_bwa/.
 
-#aws ec2 stop-instances --instance-ids "$instance"
+
 
 ## Picard ReadGroup editing & duplicate removal
-
+conda deactivate
 conda activate picard
 
 cd "$home"/"$sample"
 
 java -Xmx30G -jar "$home"/mambaforge/envs/picard/share/picard-3.1.0-0/picard.jar AddOrReplaceReadGroups I="$sample"_aligned_sorted.bam O="$sample"_aligned.readgroup.bam ID="$sample" LB="$sample" SM="$sample" PL=ILLUMINA PU=none
 
-java -Xmx90G -XX:-UseGCOverheadLimit -jar "$home"/mambaforge/envs/picard/share/picard-3.0.0/picard.jar MarkDuplicates I="$sample"_aligned.readgroup.bam O="$sample"_markdup.bam M=metrics.txt ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT REMOVE_DUPLICATES=TRUE 
+java -Xmx90G -XX:-UseGCOverheadLimit -jar "$home"/mambaforge/envs/picard/share/picard-3.1.0-0/picard.jar MarkDuplicates I="$sample"_aligned.readgroup.bam O="$sample"_markdup.bam M=metrics.txt ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT REMOVE_DUPLICATES=TRUE 
 
-cp -rp "$sample"_markedup.bam /mnt/efs/fs2/input/pangenome/out_bwa/"$sample"/.
+cp -rp "$sample"_markdup.bam /mnt/efs/fs2/input/pangenome/out_bwa/"$sample"/.
 
-#aws ec2 stop-instances --instance-ids "$instance"
+
 
 ### YAHS Scaffolding
 
