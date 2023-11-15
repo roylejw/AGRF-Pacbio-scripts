@@ -4,12 +4,11 @@
 EFS="/mnt/efs/fs2/pool_party"
 TMPDIR="/mnt/efs/fs1/temp"
 contracts=""$EFS"/"$run_number"/"contracts.txt""
-
+sudo yum install -y dos2unix
 
 cd "$TMPDIR"
 
 while read client || [[ $client ]]; do
-	sudo yum install -y dos2unix
  	dos2unix metadata.tsv
   	dos2unix sample.tsv
 	cd "$client"
