@@ -9,7 +9,9 @@ contracts=""$EFS"/"$run_number"/"contracts.txt""
 cd "$TMPDIR"
 
 while read client || [[ $client ]]; do
-
+	sudo yum install -y dos2unix
+ 	dos2unix metadata.tsv
+  	dos2unix sample.tsv
 	cd "$client"
 	rm report_"$client"_Analysis/*
 	if [[ "$skipnb" == "yes" ]]; then
