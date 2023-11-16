@@ -4,7 +4,7 @@
 EFS="/mnt/efs/fs2/pool_party"
 TMPDIR="/mnt/efs/fs1/temp"
 contracts=""$EFS"/"$run_number"/"contracts.txt""
-sudo yum install -y dos2unix
+sudo yum install -y dos2unix zip
 
 cd "$TMPDIR"
 
@@ -39,8 +39,11 @@ while read client || [[ $client ]]; do
 	rm pre-info* post-info* project_info* agrf_logo* top*
 	cd "$EFS"/"$run_number"/"$client"/
 	touch "$EFS"/"$run_number"/"$client"/run_complete
-	cd "$TMPDIR"
-done < "$contracts"
+	cd "$EFS"/"$run_number"/"$client"/
+ 	zip -r Analysis.zip Analysis/
+  	rm -rf Analysis
+ 	cd "$TMPDIR"
+  done < "$contracts"
 
 aws s3 cp --recursive "$EFS"/"$run_number"/ s3://16s-out/"$run_number"/
 
