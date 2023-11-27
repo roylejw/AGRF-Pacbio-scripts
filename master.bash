@@ -11,8 +11,8 @@ echo " !!! Do not include file prefixes in your filenames! Only the name!"
 echo "What job are you wanting to complete? Select and type the number."
 echo "1. Hifiasm assembly"
 echo "2. Demultiplex data"
-echo "3. Run stage 1 of the 16S pipeline (preparing data)"
-echo "4. Run stage 2 of the 16S pipeline (Nextflow)"
+echo "3. Run the 16S pipeline"
+
 
 read -r job_type
 
