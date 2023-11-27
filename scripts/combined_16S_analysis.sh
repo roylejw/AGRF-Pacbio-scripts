@@ -2,14 +2,13 @@
 
 echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any issues."
 source ~/miniconda3/etc/profile.d/conda.sh
+sudo yum install -y zip dos2unix
 
 if [ ! -d ~/miniconda3/envs/pbtk ]; then
 	cp /mnt/efs/fs1/conda_envs/pbtk.yml .
 	conda env create --file pbtk.yml
   fi
-
-sudo yum install -y dos2unix
-
+  
 script_start=`date +%M`
 
 if [ -d /mnt/efs/fs2/pool_party/"$run_number" ]; then
@@ -165,7 +164,7 @@ dos2unix details.tsv
 			mv demux.bc* temp/.
 			cd temp
 			cp ../barcode-sample-16S.csv .
-			rename 's/demux.bc/bc/' *
+			rename demux.bc bc *
 
 			sed 's/"//g' barcode-sample-16S.csv | while IFS=, read orig new; do mv "$orig"."$format" "$new"."$format"; done
 			
@@ -262,7 +261,7 @@ EFS="/mnt/efs/fs2/pool_party"
 TMPDIR="/mnt/efs/fs1/temp"
 contracts=""$EFS"/"$run_number"/"contracts.txt""
 client=""
-sudo yum install -y zip
+conda activate base
 
 # Read AWS credentials from file
 AWS_ACCESS_KEY_ID=$(grep 'AWS_ACCESS_KEY_ID' /mnt/efs/fs1/resources/aws_credentials.txt | cut -d '=' -f2)
