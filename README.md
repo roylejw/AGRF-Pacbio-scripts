@@ -26,8 +26,7 @@ Table of contents
   * [Rsync your data](#rsyncing-your-data-across-to-the-aws-instance)
   * [Hifiasm](#job-1---hifiasm-assembly)
   * [Demultiplexing](#job-2---demultiplexing)
-  * [Pool Party step #1](#job-3---pool-party-pt-1)
-  * [Pool Party step #2](#job-4---pool-party-pt-2)
+  * [Pool Party](#job-3---pool-party-16S)
 * [One liners that you might find useful](#one-liners-that-might-come-in-handy)
 
 <!--te-->
@@ -128,7 +127,7 @@ The input for this job can be either bam, fastq.gz or fastq.
   >2
   ```  
 
-### <h3 align="center">Job #3 - Pool party pt. 1</h3>
+### <h3 align="center">Job #3 - Pool party 16S</h3>
 
 To run a pool party job, first ensure you have the PacBio tools AMI AND Nextflow AMI running. The Nextflow AMI needs to be running on an m5.xlarge on demand instance. You will need the following files in the home directory to start a pool party run:
 - The sequencing file (bam, fastq.gz or fastq all acceptable inputs. **Must be one file**)
@@ -143,31 +142,9 @@ If you know there is a complex batch within the pool, ensure you analyze it sepe
   
   >3
   ```
+The output will be placed in the EFS pool party output, separated by contracts needed to be sent out: ```/mnt/efs/fs2/pool_party/YOUR_BATCH/```. It is also synced to the 16s-out S3 bucket.
 
 All credit for the creation of the 16S Workflow goes to Khi Pin and the PacBio team. An original version of the pipeline [can be found here](https://github.com/PacificBiosciences/pb-16S-nf). The version of the main Nextflow workflow uploaded here (found in the resources folder) is edited specifically to work on AWS in our workspace.   
-
-### <h3 align="center">Job #4 - Pool party pt. 2</h3>
-
-Simply clone in this repo and run job #4. If these are non-complex batches, answer 'no' to the NB classification question. If these are all complex, answer yes and it will skip the Naive-Bayes classification step.
-
-Note: Right now the AWS CLI is not configured with the most up-to-date keys, so AWS Batch will not run. **Please see me for correct keys before running - this is temporary until I have time to fix the image.**
-
-  ```sh
-  
-  aws configure
-  ENTER ACCESS KEY
-  ENTER PRIVATE KEY
-  press enter, leave default
-  press enter, leave default
-  
-  bash PacBio-related-scripts/master.bash
-  
-  >4
-  ```
-
-The output will be places in the EFS pool party output, separated by contracts needed to be sent out ```/mnt/efs/fs2/pool_party/YOUR_BATCH/```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### <h3 align="center">One-liners that might come in handy</h3>
 
