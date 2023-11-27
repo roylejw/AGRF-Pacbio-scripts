@@ -41,11 +41,11 @@ Simply pull this repository into the AWS instance to have the most up-to-date co
 
 Due to compatability issues, there are two separate AMIs to have running depending on what kind of work you intend on running. 
 
-If you want to run assemblies, demultiplexing, BAM conversions, or step 1 of the 16S workflow, you will need to start an instance using the following AMI:
+If you want to run assemblies, demultiplexing, BAM conversions, you will need to start an instance using the following AMI:
   ```
   PacBio Tools Image
   ```
-If you want to run step 2 of the 16S workflow, or any future Nextflow workflow, you will need to start an instance using the following AMI:
+If you want to run the 16S workflow, you will need to start an instance using the following AMI:
   ```
   16S Nextflow 1Tb attached
   ```
