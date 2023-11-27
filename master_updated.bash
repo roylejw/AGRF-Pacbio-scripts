@@ -306,7 +306,7 @@ if [[ "$job_type" == 3 ]] ; then
 	format="${full_filename##*.}"  # extracts extension
 	
 	echo "Filename: $filename"
-	echo "Filetype: $filetype"
+	echo "Filetype: $format"
 
 	MAX_TRIES=0
 	if [ ! -e ~/"$filename"."$format" ]; then
