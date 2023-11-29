@@ -50,4 +50,7 @@ python3 -m pip install -U setuptools pip wheel
 python3 -m pip install -U .
 python3 -m pip install -U -r ./toil-requirement.txt
 
-cactus-pangenome jobstore /home/ec2-user/samples.txt --outDir pangenome_test --outName senecio --reference H01 --vcf --gbz --gfa --giraffe --chrom-vg --odgi --chrom-og --viz --draw
+find /your/folder -type f -exec sh -c 'echo -e "$(basename "{}" .fasta.masked)\t{}"' \; > samples.txt
+
+
+cactus-pangenome jobstore /home/ec2-user/samples.txt --outDir pangenome_test --outName senecio --reference 2_D01_30 --vcf --gbz --gfa --giraffe --chrom-vg --odgi --chrom-og --viz --draw
