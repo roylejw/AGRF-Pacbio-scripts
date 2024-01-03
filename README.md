@@ -163,7 +163,7 @@ rename 0000000 '' *
 
 #CAGRF needs to be replaced with your code#
 mkdir /opt/staging/CAGRF/Assemblies && cd /opt/staging/CAGRF/Assemblies
-rsync -av --progress -e 'ssh -i /home/smrtanalysis/amazon_ssh/smrtlink.pem' ec2-user@ec2-13-237-108-186.ap-southeast-2.compute.amazonaws.com:/pacbio-root/software/pacbio-software/smrtlink/userdata/jobs_root/0000/0000000/temp .
+rsync -av --progress -e 'ssh -i /home/smrtanalysis/amazon_ssh/smrtlink.pem' ec2-user@ec2-52-62-201-134.ap-southeast-2.compute.amazonaws.com.compute.amazonaws.com:/pacbio-root/software/pacbio-software/smrtlink/userdata/jobs_root/0000/0000000/temp .
 nano rename.txt ##(and right-click paste the column 1 (Job IDs) + column 2 (sample name - eg CAGRF12345_Assembly1 )##
 cat rename.txt | while IFS=$'\t', read orig new; do mv "$orig".tar.gz "$new".tar.gz; done
 
