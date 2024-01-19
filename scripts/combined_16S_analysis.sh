@@ -104,8 +104,8 @@ dos2unix details.tsv
 		# Create Lima 16S barcoding csv
 
 		awk -v client="$client" -F "\t" -vOFS="," '$3~client{print $1,$2}' details.tsv > barcode-sample.csv
-		awk -v PC="$PC" -F "\t" -vOFS="," '$3~PC{print $1,$2}' details.tsv > barcode-sample-pc.csv
-		awk -v NC="$NC" -F "\t" -vOFS="," '$3~NC{print $1,$2}' details.tsv > barcode-sample-nc.csv
+		awk -v PC="$PC" -F "\t" -vOFS="," '$3==PC{print $1,$2}' details.tsv > barcode-sample-pc.csv
+		awk -v NC="$NC" -F "\t" -vOFS="," '$3==NC{print $1,$2}' details.tsv > barcode-sample-nc.csv
 		cat lima_headers_only.csv barcode-sample.csv barcode-sample-pc.csv barcode-sample-nc.csv > barcode-sample-16S.csv
 		#cat lima_headers_only.csv barcode-sample.csv > barcode-sample-16S.csv
 		rm barcode-sample.csv
