@@ -187,9 +187,9 @@ dos2unix details.tsv
 
 			awk -v client="$client" -F "\t" -vOFS='\t' '$3~client{print $2,$4,$5}' details.tsv > metadata_temp.tsv
 			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < metadata_temp.tsv > metadata2.tsv
-			awk -v PC="$PC" -F "\t" -vOFS='\t' '$3~PC{print $2,$4,$5}' details.tsv > pc_metadata_temp.tsv
+			awk -v PC="$PC" -F "\t" -vOFS='\t' '$3==PC{print $2,$4,$5}' details.tsv > pc_metadata_temp.tsv
 			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < pc_metadata_temp.tsv > pc_metadata2.tsv
-			awk -v NC="$NC" -F "\t" -vOFS='\t' '$3~NC{print $2,$4,$5}' details.tsv > nc_metadata_temp.tsv
+			awk -v NC="$NC" -F "\t" -vOFS='\t' '$3==NC{print $2,$4,$5}' details.tsv > nc_metadata_temp.tsv
 			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < nc_metadata_temp.tsv > nc_metadata2.tsv
 			cat metadata_headers_only.tsv metadata2.tsv pc_metadata2.tsv nc_metadata2.tsv > metadata.tsv
 			rm metadata2.tsv
