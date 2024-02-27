@@ -88,7 +88,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
+			if [ ! -e ~/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -106,7 +106,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
+			if [ ! -e ~/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -119,7 +119,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2"."$format" ]; then
+			if [ ! -e ~/"$hifi2"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -243,7 +243,7 @@ if [[ "$job_type" == 1 ]] ; then
 	# Time to run the assembly
 	echo "Time to run the job. Come back in ~14 hours or so. Please tell me you put me in a screen..."
 	
-	source /home/ubuntu/PacBio-related-scripts/scripts/assembly.sh	
+	source ~/PacBio-related-scripts/scripts/assembly.sh	
 fi
 
 if [[ "$job_type" == 2 ]] ; then
