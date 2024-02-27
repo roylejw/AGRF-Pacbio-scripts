@@ -13,6 +13,7 @@ echo "1. Hifiasm assembly"
 echo "2. Demultiplex data"
 echo "3. Run the 16S pipeline"
 
+instance_build=$(whoami)
 
 read -r job_type
 
@@ -35,7 +36,7 @@ MAX_TRIES=0
 
 
 if [[ "$job_type" == 1 ]] ; then
-	echo "You have selected "$job_type". Please rsync all files directly into the home directory (/home/ubuntu)"
+	echo "You have selected "$job_type". Please rsync all files directly into the home directory"
 	echo "Here are your files currently in the home directory"
 	ls -l
 	echo ""
@@ -51,7 +52,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of the first file?"
 			read -r hic1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hic1".fastq.gz ]; then
+			if [ ! -e /home/"$instance_build"/"$hic1".fastq.gz ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -63,7 +64,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of the second file?"
 			read -r hic2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hic2".fastq.gz ]; then
+			if [ ! -e /home/"$instance_build"/"$hic2".fastq.gz ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -137,7 +138,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
+			if [ ! -e /home/"$instance_build"/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -150,7 +151,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2"."$format" ]; then
+			if [ ! -e /home/"$instance_build"/"$hifi2"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -163,7 +164,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 3?"
 			read -r hifi3	
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi3"."$format" ]; then
+			if [ ! -e /home/"$instance_build"/"$hifi3"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -181,7 +182,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 1?"
 			read -r hifi1
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi1"."$format" ]; then
+			if [ ! -e /home/"$instance_build"/"$hifi1"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -194,7 +195,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 2?"
 			read -r hifi2
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi2"."$format" ]; then
+			if [ ! -e /home/"$instance_build"/"$hifi2"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -207,7 +208,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 3?"
 			read -r hifi3	
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi3"."$format" ]; then
+			if [ ! -e /home/"$instance_build"/"$hifi3"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -219,7 +220,7 @@ if [[ "$job_type" == 1 ]] ; then
 			echo "What is the filename of cell 4?"
 			read -r hifi4
 			MAX_TRIES=0
-			if [ ! -e /home/ubuntu/"$hifi4"."$format" ]; then
+			if [ ! -e /home/"$instance_build"/"$hifi4"."$format" ]; then
 				if [ "$MAX_TRIES" == 3 ]; then 
 					echo "Too many incorrect tries. Check your files and run me again!"
 					exit 1
@@ -256,7 +257,7 @@ if [[ "$job_type" == 2 ]] ; then
 	read -r format	
 	
 	MAX_TRIES=0
-	if [ ! -e /home/ubuntu/"$filename"."$format" ]; then
+	if [ ! -e /home/"$instance_build"/"$filename"."$format" ]; then
 		if [ "$MAX_TRIES" == 3 ]; then 
 			echo "Too many incorrect tries. Check your files and run me again!"
 			exit 1
@@ -282,7 +283,7 @@ if [[ "$job_type" == 2 ]] ; then
 	
 	echo "Running the demultiplex now."
 	
-	source /home/ubuntu/PacBio-related-scripts/scripts/demultiplex.sh
+	source /home/"$instance_build"/PacBio-related-scripts/scripts/demultiplex.sh
 	echo "Demultiplex complete".
 fi
 
