@@ -125,7 +125,7 @@ cd /mnt/efs/fs2/output/hifiasm_"$sample"
 echo "Starting Hifiasm. Go get a coffee or 10."
 
 if [ "$hic_confirm" == "yes" ]; then
-	/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".hic.asm -t 48 --hg-size "$genome_size" --h1 /home/"$instance_build"/"$hic1".fastq.gz --h2 /home/"$instance_build"/"$hic2".fastq.gz /home/"$instance_build"/combined.fastq 2> "$sample".log
+	/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".hic.asm -t "$cpu_choice" --hg-size "$genome_size" --h1 /home/"$instance_build"/"$hic1".fastq.gz --h2 /home/"$instance_build"/"$hic2".fastq.gz /home/"$instance_build"/combined.fastq 2> "$sample".log
 	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.p_ctg.gfa > "$sample".primary.fasta
 	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.hap1.p_ctg.gfa > "$sample".hap1.fasta
 	awk '/^S/{print ">"$2;print $3}' "$sample".hic.asm.hic.hap2.p_ctg.gfa > "$sample".hap2.fasta
@@ -140,7 +140,7 @@ if [ "$hic_confirm" == "yes" ]; then
 	conda activate quast
 	echo "Starting QUAST."
 
-	quast --large --no-snps --plots-format png -t 48 "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta
+	quast --large --no-snps --plots-format png -t "$cpu_choice" "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta
 
 	echo "QUAST Finished."
 
@@ -155,9 +155,9 @@ if [ "$hic_confirm" == "yes" ]; then
 
 	echo "Starting BUSCO."
 
-	busco -i "$sample".primary.fasta --auto-lineage-euk -o "$sample".primary_out -m genome -c 48
-	busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c 48
-	busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c 48
+	busco -i "$sample".primary.fasta --auto-lineage-euk -o "$sample".primary_out -m genome -c "$cpu_choice"
+	busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c "$cpu_choice"
+	busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c "$cpu_choice"
 
 	echo "BUSCO Finished."
 
@@ -169,7 +169,7 @@ if [ "$hic_confirm" == "yes" ]; then
 	
 else
 
-	/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".asm -t 48 --hg-size "$genome_size" /home/"$instance_build"/combined.fastq 2> "$sample".log
+	/mnt/efs/fs1/hifiasm/hifiasm -o "$sample".asm -t "$cpu_choice" --hg-size "$genome_size" /home/"$instance_build"/combined.fastq 2> "$sample".log
 	
 	awk '/^S/{print ">"$2;print $3}' "$sample".asm.bp.p_ctg.gfa > "$sample".primary.fasta
 	awk '/^S/{print ">"$2;print $3}' "$sample".asm.bp.hap1.p_ctg.gfa > "$sample".hap1.fasta
@@ -185,7 +185,7 @@ else
 	conda activate quast
 	echo "Starting QUAST."
 
-	quast --large --no-snps --plots-format png -t 48 "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta
+	quast --large --no-snps --plots-format png -t "$cpu_choice" "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta
 
 	echo "QUAST Finished."
 
@@ -200,9 +200,9 @@ else
 
 	echo "Starting BUSCO."
 
-	busco -i "$sample".primary.fasta --auto-lineage-euk -o "$sample".primary_out -m genome -c 48
-	busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c 48
-	busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c 48
+	busco -i "$sample".primary.fasta --auto-lineage-euk -o "$sample".primary_out -m genome -c "$cpu_choice"
+	busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c "$cpu_choice"
+	busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c "$cpu_choice"
 
 	echo "BUSCO Finished."
 
