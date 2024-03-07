@@ -7,11 +7,10 @@ echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any iss
 echo "Remember, your answers are case-sensitive!!!"
 
 echo "!!! Please make sure you run this in a screen! You will time-out your connection otherwise and lose your data!!!"
-echo " !!! Do not include file prefixes in your filenames! Only the name!"
 echo "What job are you wanting to complete? Select and type the number."
 echo "1. Hifiasm assembly"
-echo "2. Demultiplex data"
-echo "3. Run the 16S pipeline"
+echo "2. Run the 16S pipeline"
+echo "3. Run the ITS pipeline - NOT IN USE YET"
 
 instance_build=$(whoami)
 
@@ -237,6 +236,9 @@ if [[ "$job_type" == 1 ]] ; then
 	echo "What is your estimated genome size? Type a number + g for gigabase or m for megabase (ie 3g, 300m, etc)"
 	read -r genome_size
 
+ 	echo "How many CPUs is your instance running?"
+  	read -r cpu_choice
+
 	# Instance ID to turn off once finished
 	echo "Tell me the AWS Instance ID - it should look like this: i-0834sdfa02384asd"
 	read -r instanceid
@@ -248,46 +250,6 @@ if [[ "$job_type" == 1 ]] ; then
 fi
 
 if [[ "$job_type" == 2 ]] ; then
-	
-	echo "You have selected "$job_type". Please rsync/filezilla all files directly into the home directory (/home/ubuntu)."
-	sleep 1
-	echo "What is the filename of the sequencing file? Do not include its filetype."
-	read -r filename
-	echo "What is the format of the sequencing file? Options are bam or fastq.gz."
-	read -r format	
-	
-	MAX_TRIES=0
-	if [ ! -e /home/"$instance_build"/"$filename"."$format" ]; then
-		if [ "$MAX_TRIES" == 3 ]; then 
-			echo "Too many incorrect tries. Check your files and run me again!"
-			exit 1
-		fi
-		echo "File "$filename"."$format" not found. Try again."
-		MAX_TRIES=$((MAX_TRIES + 1))
-		echo "What is the filename of the sequencing file? Do not include its filetype."
-		read -r filename
-		echo "What is the format of the sequencing file? Options are bam or fastq.gz."
-		read -r format	
-	fi
-	
-	echo  "What is the barcode set? Options: 16S, isoseq, M13, Universal. Type as seen (inc. capitals)"
-	read -r barcode
-	
-	if [ "$barcode" != "isoseq" ]; then
-		echo  "Are these symmetric or asymmetric?"
-		read -r direction
-	fi
-	
-	echo "What name would you like to give the output folder?"
-	read -r outname
-	
-	echo "Running the demultiplex now."
-	
-	source /home/"$instance_build"/PacBio-related-scripts/scripts/demultiplex.sh
-	echo "Demultiplex complete".
-fi
-
-if [[ "$job_type" == 3 ]] ; then
 	echo "You have selected "$job_type". Please rsync/filezilla all files directly into the home directory (/home/ec2-user)."
 	echo "Make sure you have used 'screen' before running me. If not, press CTRL + C, and type screen. Then re-run me."
 	sleep 1
