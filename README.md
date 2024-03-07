@@ -25,8 +25,8 @@ Table of contents
 * [How to Run](#How-to-run)
   * [Rsync your data](#rsyncing-your-data-across-to-the-aws-instance)
   * [Hifiasm](#job-1---hifiasm-assembly)
-  * [Demultiplexing](#job-2---pool-party-16S)
-  * [Pool Party](#job-3---pool-party-ITS)
+  * [Pool Party 16S](#job-2---pool-party-16S)
+  * [Pool Party ITS](#job-3---pool-party-ITS)
 * [One liners that you might find useful](#one-liners-that-might-come-in-handy)
 
 <!--te-->
