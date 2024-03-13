@@ -119,6 +119,15 @@ if [ ! -e /home/"$instance_build"/combined.fastq ]; then
 	exit 1
 fi
 
+# Read AWS credentials
+
+AWS_ACCESS_KEY_ID=$(grep 'AWS_ACCESS_KEY_ID' /mnt/efs/fs1/resources/aws_credentials.txt | cut -d '=' -f2)
+AWS_SECRET_ACCESS_KEY=$(grep 'AWS_SECRET_ACCESS_KEY' /mnt/efs/fs1/resources/aws_credentials.txt | cut -d '=' -f2)
+
+# Configure AWS CLI with credentials
+aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+
 mkdir /mnt/efs/fs2/output/hifiasm_"$sample"
 cd /mnt/efs/fs2/output/hifiasm_"$sample"
 
@@ -162,10 +171,6 @@ if [ "$hic_confirm" == "yes" ]; then
 	echo "BUSCO Finished."
 
 	conda deactivate
-
-	if [ -e "$sample".hic.asm.hic.p_ctg.gfa ]; then
-		aws ec2 stop-instances --instance-ids "$instanceid"
-	fi
 	
 else
 
@@ -205,10 +210,24 @@ else
 	busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c "$cpu_choice"
 
 	echo "BUSCO Finished."
-
 	conda deactivate
+fi
 
-	if [ -e "$sample".asm.bp.p_ctg.gfa ]; then
-		aws ec2 stop-instances --instance-ids "$instanceid"
-	fi
+mkdir -p "$client"/Assembly
+mkdir -p "$client"/QC/quast
+mkdir -p "$client"/QC/busco
+
+cp "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta "$client"/Assembly/.
+
+cp quast_results/latest/* "$client"/QC/quast/.
+cp "$sample".primary_out/*.txt "$sample".hap1_out/*.txt "$sample".hap2_out/*.txt "$client"/QC/busco/.
+
+zip -r Intermediate_files.zip busco_downloads "$sample".primary_out "$sample".hap1_out "$sample".hap2_out quast_results *.*
+
+mkdir -p "$client"/Intermediate_files && mv Intermediate_files.zip "$client"/Intermediate_files/.
+
+aws s3 cp --recursive /mnt/efs/fs2/output/hifiasm_"$sample"/"$client"/ s3://hifiasm-out/"$client"/
+
+if [ -e "$sample".asm.bp.p_ctg.gfa ]; then
+	aws ec2 stop-instances --instance-ids "$instanceid"
 fi
