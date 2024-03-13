@@ -213,18 +213,18 @@ else
 	conda deactivate
 fi
 
-mkdir -p "$client"/Assembly
-mkdir -p "$client"/QC/quast
-mkdir -p "$client"/QC/busco
+mkdir -p "$client"/"$sample"/Assembly
+mkdir -p "$client"/"$sample"/QC/quast
+mkdir -p "$client"/"$sample"/QC/busco
 
-cp "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta "$client"/Assembly/.
+cp "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta "$client"/"$sample"/Assembly/.
 
-cp quast_results/latest/* "$client"/QC/quast/.
-cp "$sample".primary_out/*.txt "$sample".hap1_out/*.txt "$sample".hap2_out/*.txt "$client"/QC/busco/.
+cp quast_results/latest/* "$client"/"$sample"/QC/quast/.
+cp "$sample".primary_out/*.txt "$sample".hap1_out/*.txt "$sample".hap2_out/*.txt "$client"/"$sample"/QC/busco/.
 
 zip -r Intermediate_files.zip busco_downloads "$sample".primary_out "$sample".hap1_out "$sample".hap2_out quast_results *.*
 
-mkdir -p "$client"/Intermediate_files && mv Intermediate_files.zip "$client"/Intermediate_files/.
+mkdir -p "$client"/"$sample"/Intermediate_files && mv Intermediate_files.zip "$client"/"$sample"/Intermediate_files/.
 
 aws s3 cp --recursive /mnt/efs/fs2/output/hifiasm_"$sample"/"$client"/ s3://hifiasm-out/"$client"/
 
