@@ -39,7 +39,12 @@ if [[ "$job_type" == 1 ]] ; then
 	echo "Here are your files currently in the home directory"
 	ls -l
 	echo ""
-	echo "What is the sample prefix you want to give to your assembly?"
+
+ 	echo "What is the client code for this project?"
+  	read -r client
+   
+	echo "What is the sample prefix you want to give to your assembly? Please ensure this is unique for the project code you gave above."
+ 	echo "If the sample name is not unique, you will overwrite other samples within the client code you've given."
 	read -r sample
 	
 	# HiC data inclusion
