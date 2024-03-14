@@ -19,8 +19,8 @@ if [ "$format" == "bam" ]; then
             echo "Indexing $file"
             pbindex "$file"
             echo "Converting bam's to fastq's"
-            sample=$(basename "$file" ".$format")
-            bam2fastq -o "${sample}" -u "$file"
+            sample2=$(basename "$file" ".$format")
+            bam2fastq -o "${sample2}" -u "$file"
         fi
     done
 
