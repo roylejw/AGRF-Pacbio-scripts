@@ -39,18 +39,12 @@ Simply pull this repository into the AWS instance to have the most up-to-date co
 
 ### <h3 align="center">Prerequisites</h3>
 
-Due to compatability issues, there are two separate AMIs to have running depending on what kind of work you intend on running. 
-
-If you want to run assemblies, demultiplexing, BAM conversions, you will need to start an instance using the following AMI:
-  ```
-  PacBio Tools Image
-  ```
-If you want to run the 16S workflow, you will need to start an instance using the following AMI:
+All workflows now run on the following AMI:
   ```
   16S Nextflow 1Tb attached
   ```
 
-Take note that your username will be different - The Pacbio tools image uses 'ubuntu', whereas the nextflow image uses 'ec2-user'. Keep that in mind when connecting with Putty/Filezilla/etc.
+Your username to connect will be ec2-user.
 
 ### <h3 align="center">Installation</h3>
 
@@ -102,9 +96,9 @@ If you'd prefer, you can also use Filezilla to move files around. This makes tra
 
 ### <h3 align="center">Job #1 - Hifiasm assembly</h3>
 
-To run an automated Hifiasm assembly, run the master script and select option 1. This will run a hifiasm assembly job with automatic QUAST and BUSCO QC. BUSCO is set to auto-linage assessment, through the ```auto-lineage-euk``` command. This automated script can handle up to 4 hifi cells at the moment, and requires either a bam, or fastq.gz input. The output is placed in AWS EFS storage, accessible at ```/mnt/efs/fs2/output```.
+To run an automated Hifiasm assembly, run the master script and select option 1. This will run a hifiasm assembly job with automatic QUAST and BUSCO QC. BUSCO is set to auto-linage assessment, through the ```auto-lineage-euk``` command. This automated script will find and combine all sequencing files in the home directory, and requires either a bam, or fastq.gz input. The output is placed in AWS S3 storage, accessible at ```s3://hifiasm-out/```.
 
-Hifiasm is expecting 48 CPUs, so run this on an **on-demand, m5.12xlarge** instance. 
+Hifiasm memory requirements scale with input HiFi read size. For a single 90Gb HiFi readset, use an instance with 100+Gb RAM. Scale up if more reads are given. 
 
   ```sh
   bash PacBio-related-scripts/master.bash
