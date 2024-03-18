@@ -98,7 +98,7 @@ if [[ "$job_type" == 1 ]] ; then
 	# Time to run the assembly
 	echo "Time to run the job. Come back in ~14 hours or so. Please tell me you put me in a screen..."
 	
-	source ~/PacBio-related-scripts/scripts/assembly_test.sh	
+	source ~/PacBio-related-scripts/scripts/assembly.sh	
 fi
 
 if [[ "$job_type" == 2 ]] ; then
