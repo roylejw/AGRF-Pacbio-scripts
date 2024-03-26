@@ -173,3 +173,76 @@ if [[ "$job_type" == 2 ]] ; then
 	cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/.
 	source ~/PacBio-related-scripts/scripts/combined_16S_analysis.sh
 fi
+
+if [[ "$job_type" == 3 ]] ; then
+	echo "You have selected "$job_type". Please rsync/filezilla all files directly into the home directory (/home/ec2-user)."
+	echo "Make sure you have used 'screen' before running me. If not, press CTRL + C, and type screen. Then re-run me."
+	sleep 1
+	echo "Please tell me the name of the batch folder you want the output to be called (ie. run_1, run_2, etc)."
+	ls -la /mnt/efs/fs2/pool_party_ITS
+ 	read -r run_number
+	
+	if [ ! -d /mnt/efs/fs2/pool_party_ITS/"$run_number" ]; then
+		mkdir /mnt/efs/fs2/pool_party_ITS/"$run_number"
+	fi
+	
+	echo "What is the filename of your HiFi data? Copy-paste the full name from the list below (THIS NOW INCLUDES THE FILE EXTENSION)!"
+	ls -la
+ 	read -r full_filename
+	
+	filename="${full_filename%.*}"  # removes extension
+	format="${full_filename##*.}"  # extracts extension
+	
+	echo "Filename: $filename"
+	echo "Filetype: $format"
+
+	MAX_TRIES=0
+	if [ ! -e ~/"$filename"."$format" ]; then
+		if [ "$MAX_TRIES" == 3 ]; then 
+			echo "Too many incorrect tries. Check your files and run me again!"
+			exit 1
+		fi
+		echo "File "$filename"."$format" not found. Try again."
+		MAX_TRIES=$((MAX_TRIES + 1))
+		echo "What is the filename of your HiFi data? Copy-paste the full name from the list below (THIS NOW INCLUDES THE FILE EXTENSION)!"
+		ls -la
+		read -r full_filename
+		filename="${full_filename%.*}"  # removes extension
+		format="${full_filename##*.}"  # extracts extension
+	fi
+	
+	echo "What would you like to downsample to (default is 100000 per sample - press enter if you're happy with that value)"
+	read -r downsample
+	if [ -z "$downsample" ]; then
+		downsample=100000
+	fi
+	
+	echo "Please tell me the AWS instance ID so I can turn the head node off when complete."
+	read -r instance
+	
+	echo "Checking to see if you have synced in your details.tsv and contracts.txt..."
+	sleep 1
+	echo "..."
+	sleep 2
+	
+	if [ -e ~/contracts.txt ]; then
+		echo "List of contracts exists."
+	elif [ ! -e /mnt/efs/fs2/pool_party_ITS/"$run_number"/contracts.txt ]; then
+		echo "Error - contract list not present."
+		echo "Verification failed."
+		exit 1
+	fi
+	if [ -e ~/details.tsv ]; then
+		echo "Details file exists."
+	elif [ ! -e ~/details.tsv ]; then
+		echo "Error - details tsv not present."
+		echo "Verification failed."
+		exit 1
+	fi
+	echo "Check complete, ready for blastoff."
+	
+	cp contracts.txt /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
+	cp details.tsv /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
+	cp "$filename"."$format" /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
+	source ~/PacBio-related-scripts/scripts/combined_ITS_analysis.sh
+fi
