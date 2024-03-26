@@ -301,8 +301,10 @@ while read client || [[ $client ]]; do
 	cd "$EFS"/"$run_number"/"$client"/
 	touch "$EFS"/"$run_number"/"$client"/run_complete
 	cd "$EFS"/"$run_number"/"$client"/
- 	zip -r Analysis.zip Analysis/
+ 	zip -r ITS_Analysis.zip Analysis/
+  	zip -r Demultiplexed.zip Demultiplexed/
   	rm -rf Analysis
+   	rm -rf Demultiplexed
  	cd "$TMPDIR"
   done < "$contracts"
 
