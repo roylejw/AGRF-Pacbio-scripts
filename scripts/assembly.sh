@@ -55,8 +55,8 @@ AWS_SECRET_ACCESS_KEY=$(grep 'AWS_SECRET_ACCESS_KEY' /mnt/efs/fs1/resources/aws_
 aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
 aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
 
-mkdir /mnt/efs/fs2/output/hifiasm_"$sample"
-cd /mnt/efs/fs2/output/hifiasm_"$sample"
+mkdir hifiasm_"$sample"
+cd hifiasm_"$sample"
 
 echo "Starting Hifiasm. Go get a coffee or 10."
 
@@ -153,7 +153,7 @@ zip -r Intermediate_files.zip busco_downloads "$sample".primary_out "$sample".ha
 
 mkdir -p "$client"/"$sample"/Intermediate_files && mv Intermediate_files.zip "$client"/"$sample"/Intermediate_files/.
 
-aws s3 cp --recursive /mnt/efs/fs2/output/hifiasm_"$sample"/"$client"/ s3://hifiasm-out/"$client"/
+aws s3 cp --recursive /home/"$instance_build"/hifiasm_"$sample"/"$client"/ s3://hifiasm-out/"$client"/
 
 if [ -e "$sample".asm.bp.p_ctg.gfa ]; then
 	aws ec2 stop-instances --instance-ids "$instanceid"
