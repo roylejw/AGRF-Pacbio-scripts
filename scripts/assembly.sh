@@ -26,6 +26,7 @@ if [ "$format" == "bam" ]; then
 
     # Combine all generated fastq files
     cat *.fastq > combined.fastq
+    find . -name "*.fastq" -type f ! -name "combined.fastq" -delete
 
     conda deactivate
 fi
@@ -44,7 +45,11 @@ if [ "$format" == "fastq.gz" ] || [ "$format" == "fastq" ]; then
 
     # Combine all generated fastq files
     cat "${sample}"_*.fastq > combined.fastq
+    find . -name "*.fastq" -type f ! -name "combined.fastq" -delete
+    
 fi
+
+find . -name "*.bam" -type f ! -name "combined.fastq" -delete
 
 # Read AWS credentials
 
