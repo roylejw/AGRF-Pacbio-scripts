@@ -80,20 +80,36 @@ if [ "$hic_confirm" == "yes" ]; then
 
 	echo "QUAST Finished."
 
-	conda deactivate
+ 	conda deactivate
 
 	if [ ! -d ~/miniconda3/envs/busco ]; then
-		cp /mnt/efs/fs1/resources/busco_share.yml .
-		conda env create --file busco_share.yml
+		cp /mnt/efs/fs1/resources/compleasm.yml .
+		conda env create --file compleasm.yml
 	fi
 
-	conda activate busco
+	conda activate compleasm
 
-	echo "Starting BUSCO."
+	echo "Starting Compleasm."
 
-	busco -i "$sample".primary.fasta --auto-lineage-euk -o "$sample".primary_out -m genome -c "$cpu_choice"
-	busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c "$cpu_choice"
-	busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c "$cpu_choice"
+ 	compleasm run -a "$sample".primary.fasta --autolineage -t "$cpu_choice" -o "$sample".primary_out
+  	cd "$sample".primary_out
+   	mv summary.txt "$sample".primary.summary.txt
+    	cd ..
+     
+	compleasm run -a "$sample".hap1.fasta --autolineage -t "$cpu_choice" -o "$sample".hap1_out
+   	cd "$sample".hap1_out
+   	mv summary.txt "$sample".hap1.summary.txt
+    	cd ..
+     
+	compleasm run -a "$sample".hap2.fasta --autolineage -t "$cpu_choice" -o "$sample".hap2_out
+   	cd "$sample".hap2_out
+   	mv summary.txt "$sample".hap2.summary.txt
+    	cd ..
+
+
+	#busco -i "$sample".primary.fasta --auto-lineage-euk -o "$sample".primary_out -m genome -c "$cpu_choice"
+	#busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c "$cpu_choice"
+	#busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c "$cpu_choice"
 
 	echo "BUSCO Finished."
 
@@ -124,32 +140,45 @@ else
 	conda deactivate
 
 	if [ ! -d ~/miniconda3/envs/busco ]; then
-		cp /mnt/efs/fs1/resources/busco_share.yml .
-		conda env create --file busco_share.yml
+		cp /mnt/efs/fs1/resources/compleasm.yml .
+		conda env create --file compleasm.yml
 	fi
 
-	conda activate busco
+	conda activate compleasm
 
-	echo "Starting BUSCO."
+	echo "Starting Compleasm."
 
-	busco -i "$sample".primary.fasta --auto-lineage-euk -o "$sample".primary_out -m genome -c "$cpu_choice"
-	busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c "$cpu_choice"
-	busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c "$cpu_choice"
+ 	compleasm run -a "$sample".primary.fasta --autolineage -t "$cpu_choice" -o "$sample".primary_out
+  	cd "$sample".primary_out
+   	mv summary.txt "$sample".primary.summary.txt
+    	cd ..
+     
+	compleasm run -a "$sample".hap1.fasta --autolineage -t "$cpu_choice" -o "$sample".hap1_out
+   	cd "$sample".hap1_out
+   	mv summary.txt "$sample".hap1.summary.txt
+    	cd ..
+     
+	compleasm run -a "$sample".hap2.fasta --autolineage -t "$cpu_choice" -o "$sample".hap2_out
+   	cd "$sample".hap2_out
+   	mv summary.txt "$sample".hap2.summary.txt
+    	cd ..
+	#busco -i "$sample".hap1.fasta --auto-lineage-euk -o "$sample".hap1_out -m genome -c "$cpu_choice"
+	#busco -i "$sample".hap2.fasta --auto-lineage-euk -o "$sample".hap2_out -m genome -c "$cpu_choice"
 
-	echo "BUSCO Finished."
+	echo "Compleasm Finished."
 	conda deactivate
 fi
 
 mkdir -p "$client"/"$sample"/Assembly
 mkdir -p "$client"/"$sample"/QC/quast
-mkdir -p "$client"/"$sample"/QC/busco
+mkdir -p "$client"/"$sample"/QC/compleasm
 
 cp "$sample".primary.fasta "$sample".hap1.fasta "$sample".hap2.fasta "$client"/"$sample"/Assembly/.
 
 cp quast_results/latest/* "$client"/"$sample"/QC/quast/.
-cp "$sample".primary_out/*.txt "$sample".hap1_out/*.txt "$sample".hap2_out/*.txt "$client"/"$sample"/QC/busco/.
+cp "$sample".primary_out/*.txt "$sample".hap1_out/*.txt "$sample".hap2_out/*.txt "$client"/"$sample"/QC/compleasm/.
 
-zip -r Intermediate_files.zip busco_downloads "$sample".primary_out "$sample".hap1_out "$sample".hap2_out quast_results *.*
+zip -r Intermediate_files.zip mb_downloads "$sample".primary_out "$sample".hap1_out "$sample".hap2_out quast_results *.*
 
 mkdir -p "$client"/"$sample"/Intermediate_files && mv Intermediate_files.zip "$client"/"$sample"/Intermediate_files/.
 
