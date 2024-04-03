@@ -188,9 +188,9 @@ dos2unix details.tsv
 			cd temp
 			rm barcode-sample-16S.csv
    			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
-      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 1000 ]; then echo $i; fi; done > failing_samples.tsv
+      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 8000 ]; then echo $i; fi; done > samples_below_threshold.tsv
 			mv sample2.tsv "$TMPDIR"/"$client"
-   			mv failing_samples.tsv "$TMPDIR"/"$client"
+   			mv samples_below_threshold.tsv "$TMPDIR"/"$client"
 			cd "$TMPDIR"/"$client"
 			cat sample_headers_only.tsv sample2.tsv > sample.tsv
 			rm sample_headers_only.tsv
@@ -228,9 +228,9 @@ dos2unix details.tsv
 			cd temp
 			rm barcode-sample-16S.csv
    			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
-      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 1000 ]; then echo $i; fi; done > failing_samples.tsv
+      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 8000 ]; then echo $i; fi; done > samples_below_threshold.tsv
 			mv sample2.tsv "$TMPDIR"/"$client"
-   			mv failing_samples.tsv "$TMPDIR"/"$client"
+   			mv samples_below_threshold.tsv "$TMPDIR"/"$client"
 			cd "$TMPDIR"/"$client"
 			cat sample_headers_only.tsv sample2.tsv > sample.tsv
 			rm sample_headers_only.tsv
@@ -283,7 +283,7 @@ while read client || [[ $client ]]; do
 	
 	mkdir "$EFS"/"$run_number"/"$client"
 	cp -rL "$client"_Analysis/ "$EFS"/"$run_number"/"$client"/
- 	cp "$TMPDIR"/"$client"/failing_samples.tsv "$EFS"/"$run_number"/"$client"/failing_samples.tsv
+ 	cp "$TMPDIR"/"$client"/samples_below_threshold.tsv "$EFS"/"$run_number"/"$client"/samples_below_threshold.tsv
 	cd "$EFS"/"$run_number"/"$client"/
 	mv "$client"_Analysis/ Analysis/
 	cd Analysis/results
