@@ -183,12 +183,12 @@ dos2unix details.tsv
 			cd "$TMPDIR"/"$client"
 			conda deactivate
 
-			### New samples sheet creation - filters samples below n reads (currently 2000)
+			### New samples sheet creation - filters samples below n reads (currently 1000)
    
 			cd temp
 			rm barcode-sample-16S.csv
-   			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 2000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
-      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 2000 ]; then echo $i; fi; done > failing_samples.tsv
+   			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
+      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 1000 ]; then echo $i; fi; done > failing_samples.tsv
 			mv sample2.tsv "$TMPDIR"/"$client"
    			mv failing_samples.tsv "$TMPDIR"/"$client"
 			cd "$TMPDIR"/"$client"
@@ -224,11 +224,11 @@ dos2unix details.tsv
 				mv "$file" "$new_file"
 			done
 
-   			### New samples sheet creation - filters samples below n reads (currently 2000)
+   			### New samples sheet creation - filters samples below n reads (currently 1000)
 			cd temp
 			rm barcode-sample-16S.csv
-   			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 2000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
-      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 2000 ]; then echo $i; fi; done > failing_samples.tsv
+   			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
+      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 1000 ]; then echo $i; fi; done > failing_samples.tsv
 			mv sample2.tsv "$TMPDIR"/"$client"
    			mv failing_samples.tsv "$TMPDIR"/"$client"
 			cd "$TMPDIR"/"$client"
