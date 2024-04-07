@@ -11,6 +11,7 @@ echo "What job are you wanting to complete? Select and type the number."
 echo "1. Hifiasm assembly"
 echo "2. Run the 16S pipeline"
 echo "3. Run the ITS pipeline - NOT IN USE YET"
+echo "4. Run hifiasm_meta - metagenome assembly"
 
 instance_build=$(whoami)
 
@@ -245,4 +246,22 @@ if [[ "$job_type" == 3 ]] ; then
 	cp details.tsv /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
 	cp "$filename"."$format" /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
 	source ~/PacBio-related-scripts/scripts/combined_ITS_analysis.sh
+fi
+
+if [[ "$job_type" == 4 ]] ; then
+
+	echo "What is the client code for this project?"
+	read -r client
+
+	echo "What is the sample prefix you want to give to your assembly? Please ensure this is unique for the project code you gave above."
+	echo "If the sample name is not unique, you will overwrite other samples within the client code you've given."
+	read -r sample
+
+	echo "How many CPUs is your instance running?"
+	read -r threads
+
+	echo "Tell me the AWS Instance ID - it should look like this: i-0834sdfa02384asd"
+	read -r instanceid
+
+	source ~/PacBio-related-scripts/scripts/hifiasm_meta.sh	
 fi
