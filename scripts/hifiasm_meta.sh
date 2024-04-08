@@ -1,6 +1,7 @@
 #!/bin/sh
 
 sudo yum update -y
+sudo yum install awscli -y
 
 cd ~
 
@@ -15,7 +16,7 @@ format=bam
 
 for file in *."$format"; do
     if [ -f "$file" ]; then
-    	if [ ! -f "$file"."$format".pbi ]; then
+    	if [ ! -f "$file".pbi ]; then
         	echo "Indexing $file"
         	pbindex "$file"
 	else
