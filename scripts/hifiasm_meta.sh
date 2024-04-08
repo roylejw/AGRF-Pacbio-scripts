@@ -49,7 +49,7 @@ fi
 mkdir hifiasm_"$sample"
 cd hifiasm_"$sample"
 
-/home/"$instance_build"/hifiasm-meta/hifiasm_meta -t "$threads" -o asm "$sample2".fastq.gz 2>asm.log
+/home/"$instance_build"/hifiasm-meta/hifiasm_meta -t "$threads" -o asm /home/"$instance_build/"$sample2".fastq.gz 2>asm.log
 
 awk '/^S/{print ">"$2;print $3}' *p_ctg*.gfa > "$sample".primary.fasta
 
