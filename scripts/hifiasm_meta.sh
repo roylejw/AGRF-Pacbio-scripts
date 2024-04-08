@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sudo yum update --all -y
+
 cd ~
 
 source ~/miniconda3/etc/profile.d/conda.sh
@@ -17,12 +19,15 @@ for file in *."$format"; do
         pbindex "$file"
         echo "Converting bam's to fastq's"
         sample2=$(basename "$file" ".$format")
-        bam2fastq -o "${sample2}" "$file"
+	if [ ! -f "$sample2".fastq.gz ]; then
+        	bam2fastq -o "${sample2}" "$file"
+	else
+  		echo "Output file $output_file already exists. Skipping conversion."
+    	fi
     fi
 done
 
-cat *.fastq > combined.fastq
-
+#cat *.fastq > combined.fastq
 
 AWS_ACCESS_KEY_ID=$(grep 'AWS_ACCESS_KEY_ID' /mnt/efs/fs1/resources/aws_credentials.txt | cut -d '=' -f2)
 AWS_SECRET_ACCESS_KEY=$(grep 'AWS_SECRET_ACCESS_KEY' /mnt/efs/fs1/resources/aws_credentials.txt | cut -d '=' -f2)
@@ -30,13 +35,19 @@ AWS_SECRET_ACCESS_KEY=$(grep 'AWS_SECRET_ACCESS_KEY' /mnt/efs/fs1/resources/aws_
 aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
 aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
 
+conda deactivate
+
+if [ ! -d hifiasm-meta ]; then
+	git clone https://github.com/xfengnefx/hifiasm-meta.git
+ 	cd hifiasm-meta && make
+fi
+
 mkdir hifiasm_"$sample"
 cd hifiasm_"$sample"
 
-/mnt/efs/fs1/hifiasm-meta/hifiasm_meta -t "$threads" -o asm combined.fastq.gz 2>asm.log
+/home/"$instance_build"/hifiasm-meta/hifiasm_meta -t "$threads" -o asm "$sample2".fastq.gz 2>asm.log
 
-
-awk '/^S/{print ">"$2;print $3}' *.p_ctg*.gfa > "$sample".primary.fasta
+awk '/^S/{print ">"$2;print $3}' *p_ctg*.gfa > "$sample".primary.fasta
 
 mkdir -p "$client"/"$sample"/Assembly
 
