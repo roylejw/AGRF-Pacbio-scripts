@@ -15,14 +15,18 @@ format=bam
 
 for file in *."$format"; do
     if [ -f "$file" ]; then
-        echo "Indexing $file"
-        pbindex "$file"
-        echo "Converting bam's to fastq's"
+    	if [ ! -f "$file"."$format".pbi ]; then
+        	echo "Indexing $file"
+        	pbindex "$file"
+	else
+  		echo "Output file $file already exists. Skipping conversion."
+    	fi
         sample2=$(basename "$file" ".$format")
 	if [ ! -f "$sample2".fastq.gz ]; then
+ 		echo "Converting bam's to fastq's"
         	bam2fastq -o "${sample2}" "$file"
 	else
-  		echo "Output file $output_file already exists. Skipping conversion."
+  		echo "Output file $sample2 already exists. Skipping conversion."
     	fi
     fi
 done
