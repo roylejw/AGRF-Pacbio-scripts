@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sudo yum update --all -y
+sudo yum update -y
 
 cd ~
 
