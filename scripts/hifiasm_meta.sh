@@ -1,5 +1,7 @@
 #!/bin/sh
 
+instance_build=$(whoami)
+
 sudo yum update -y
 sudo yum install awscli -y
 
