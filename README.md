@@ -27,6 +27,7 @@ Table of contents
   * [Hifiasm](#job-1---hifiasm-assembly)
   * [Pool Party 16S](#job-2---pool-party-16S)
   * [Pool Party ITS](#job-3---pool-party-ITS)
+  * [Hifiasm-meta](#Job-4---Hifiasm-meta:-a-metagenome-fork-of-hifiasm)
 * [One liners that you might find useful](#one-liners-that-might-come-in-handy)
 
 <!--te-->
@@ -50,7 +51,7 @@ Your username to connect will be ec2-user.
 
 1. Turn on and log into AMI as per the SOP.
 
-2. Clone the repo into the home directory (/home/ubuntu/ or /home/ec2-user/). If you do this immediately after logging into the instance, you'll already be here.
+2. Clone the repo into the home directory (/home/ec2-user/). If you do this immediately after logging into the instance, you'll already be here.
 
    ```sh
    git clone https://github.com/roylejw/PacBio-related-scripts.git
@@ -83,7 +84,7 @@ To rsync your data, log into our local server and run this command, replacing qu
 ```sh
  rsync -av --progress -e 'ssh -i /home/smrtanalysis/amazon_ssh/EC2.pem' "$PATH/TO/YOUR/FILENAME/file".bam "$USERNAME"@"$AWS-INSTANCE-NAME":/home/"$USERNAME"
  ```
- - "$USERNAME" will either be ubuntu or ec2-user, depending on your workflow
+ - "$USERNAME" will usually be ec2-user, depending on your workflow and instance setup
  - AWS instance name can be found on AWS EC2 instances page
 
  
@@ -142,6 +143,17 @@ The output will be placed in the EFS pool party output, separated by contracts n
 
 All credit for the original creation of the 16S Workflow goes to Khi Pin and the PacBio team. An original version of the pipeline [can be found here](https://github.com/PacificBiosciences/pb-16S-nf). The version of the main Nextflow workflow uploaded here (found in the resources folder) is edited specifically to work on AWS in our workspace, and to account for changes required to work with a full length ITS read.   
 
+### <h3 align="center">Job #4 - Hifiasm-meta: a metagenome fork of hifiasm</h3>
+
+To run an automated Hifiasm metagenome assembly, run the master script and select option 4. This will run the metagenome fork of hifiasm assembly, but will skip the automatic QUAST and BUSCO QC that occurs in the normal hifiasm job. The input to this job is a single bam, or single fastq.gz file. Currently it is unable to take in multiple SMRT cells of data (you can manually combine these prior to running). The output is placed in AWS S3 storage, accessible at ```s3://hifiasm-out/```.
+
+Hifiasm memory requirements scale with input HiFi read size. For a single 90Gb HiFi readset, use an instance with 100+Gb RAM. Scale up if more reads are given. Typically, an R5ad.16xlarge is the best bang for buck at this scale, and very rarely drops out (<5%)
+
+  ```sh
+  bash PacBio-related-scripts/master.bash
+  
+  >4
+  ```
 
 ### <h3 align="center">One-liners that might come in handy</h3>
 
