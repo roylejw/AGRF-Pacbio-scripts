@@ -49,6 +49,7 @@ if [ ! -d hifiasm-meta ]; then
  	cd hifiasm-meta && make
 fi
 
+cd ~
 mkdir hifiasm_"$sample"
 cd hifiasm_"$sample"
 
