@@ -176,30 +176,25 @@ dos2unix details.tsv
 			cd "$TMPDIR"/"$client"
 			conda deactivate
 
-			# Metadata and sample tsv creation
-
-			awk -v client="$client" -F "\t" -vOFS='\t' '$3~client{print $2,$4}' details.tsv > metadata_temp.tsv
-			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < metadata_temp.tsv > metadata2.tsv
-			awk -v PC="$PC" -F "\t" -vOFS='\t' '$3==PC{print $2,$4}' details.tsv > pc_metadata_temp.tsv
-			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < pc_metadata_temp.tsv > pc_metadata2.tsv
-			awk -v NC="$NC" -F "\t" -vOFS='\t' '$3==NC{print $2,$4}' details.tsv > nc_metadata_temp.tsv
-			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < nc_metadata_temp.tsv > nc_metadata2.tsv
-			cat metadata_headers_only.tsv metadata2.tsv pc_metadata2.tsv nc_metadata2.tsv > metadata.tsv
-			rm metadata2.tsv
-			rm metadata_temp.tsv
-			rm pc_metadata_temp.tsv
-			rm nc_metadata_temp.tsv
-			rm pc_metadata2.tsv
-			rm nc_metadata2.tsv
+			### New samples sheet creation - filters samples below n reads (currently 1000)
 
 			cd temp
-			rm barcode-sample-ITS.csv
-			ls *fastq | while read i; do echo -e "$i\t$PWD/$i"; done > sample2.tsv
+			rm barcode-sample-16S.csv
+   			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
+      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 8000 ]; then echo $i; fi; done > samples_below_threshold.tsv
 			mv sample2.tsv "$TMPDIR"/"$client"
+   			mv samples_below_threshold.tsv "$TMPDIR"/"$client"
 			cd "$TMPDIR"/"$client"
 			cat sample_headers_only.tsv sample2.tsv > sample.tsv
-			rm sample2.tsv
 			rm sample_headers_only.tsv
+
+			### New metadata sheet creator - uses the sample2.tsv created above to filter the details.tsv and create a metadata file for the run with only passing samples
+   
+   			filtered_files=$(awk '{print $1}' sample2.tsv)
+			awk -vOFS='\t' -v filtered_files="$filtered_files" 'BEGIN { split(filtered_files, arr, " "); for (i in arr) filtered[arr[i]] } $2 ".fastq" in filtered { print $2 ".fastq", $4 }' details.tsv > metadata2.tsv
+   			cat metadata_headers_only.tsv metadata2.tsv > metadata.tsv
+      			rm sample2.tsv
+			rm metadata2.tsv
 			rm metadata_headers_only.tsv
 
 		else
@@ -209,38 +204,38 @@ dos2unix details.tsv
 			cd "$TMPDIR"/"$client"
 			conda deactivate
 
-			# Metadata and sample tsv creation
+			### Copies previously demuxed fastq's in to temp folder
 
-			awk -v client="$client" -F "\t" -vOFS='\t' '$3~client{print $2,$4}' details.tsv > metadata_temp.tsv
-			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < metadata_temp.tsv > metadata2.tsv
-			awk -v PC="$PC" -F "\t" -vOFS='\t' '$3==PC{print $2,$4}' details.tsv > pc_metadata_temp.tsv
-			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < pc_metadata_temp.tsv > pc_metadata2.tsv
-			awk -v NC="$NC" -F "\t" -vOFS='\t' '$3==NC{print $2,$4}' details.tsv > nc_metadata_temp.tsv
-			awk -F "\t" -vOFS='\t' '{ $1=$1 ".fastq" }1' < nc_metadata_temp.tsv > nc_metadata2.tsv
-			cat metadata_headers_only.tsv metadata2.tsv pc_metadata2.tsv nc_metadata2.tsv > metadata.tsv
-			rm metadata2.tsv
-			rm metadata_temp.tsv
-			rm pc_metadata_temp.tsv
-			rm nc_metadata_temp.tsv
-			rm pc_metadata2.tsv
-			rm nc_metadata2.tsv
-
-			mkdir temp
+   			mkdir temp
 			cd temp
 			cp "$EFS"/"$run_number"/"$client"/Demultiplexed/*.fastq .
-			
+
 			### Check and remove spaces in file names
 			
 			for file in *\ *; do
 				new_file=${file// /}
 				mv "$file" "$new_file"
 			done
-			
-			ls *fastq | while read i; do echo -e "$i\t$PWD/$i"; done > sample2.tsv
-			mv sample2.tsv $TMPDIR
-			cd $TMPDIR
+
+   			### New samples sheet creation - filters samples below n reads (currently 1000)
+			cd temp
+			rm barcode-sample-16S.csv
+   			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
+      			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 8000 ]; then echo $i; fi; done > samples_below_threshold.tsv
+			mv sample2.tsv "$TMPDIR"/"$client"
+   			mv samples_below_threshold.tsv "$TMPDIR"/"$client"
+			cd "$TMPDIR"/"$client"
 			cat sample_headers_only.tsv sample2.tsv > sample.tsv
-			rm sample2.tsv
+			rm sample_headers_only.tsv
+
+			### New metadata sheet creator - uses the sample2.tsv created above to filter the details.tsv and create a metadata file for the run with only passing samples
+   
+   			filtered_files=$(awk '{print $1}' sample2.tsv)
+			awk -vOFS='\t' -v filtered_files="$filtered_files" 'BEGIN { split(filtered_files, arr, " "); for (i in arr) filtered[arr[i]] } $2 ".fastq" in filtered { print $2 ".fastq", $4 }' details.tsv > metadata2.tsv
+   			cat metadata_headers_only.tsv metadata2.tsv > metadata.tsv
+      			rm sample2.tsv
+			rm metadata2.tsv
+			rm metadata_headers_only.tsv
 		fi
 		
 	echo ""$client" files are set-up."
@@ -271,8 +266,7 @@ while read client || [[ $client ]]; do
   	dos2unix sample.tsv
 	cd "$client"
 	rm report_"$client"_Analysis/*
-	if [[ "$skipnb" == "yes" ]]; then
-		nextflow run /mnt/efs/fs1/pb-ITS-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --skip_nb true -profile docker --outdir "$client"_Analysis -bucket-dir 's3://its-pipeline-lgr/temp' --downsample "$downsample" -resume
+	nextflow run /mnt/efs/fs1/pb-ITS-nf/main.nf --input sample.tsv --metadata metadata.tsv --dada2_cpu 94 --vsearch_cpu 94 --skip_nb true -profile docker --outdir "$client"_Analysis -bucket-dir 's3://its-pipeline-lgr/temp' --downsample "$downsample" -resume
 	
 	### Create Analysis Directory, move files out to EFS & edit HTML ###
 	
