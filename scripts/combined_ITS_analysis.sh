@@ -179,7 +179,7 @@ dos2unix details.tsv
 			### New samples sheet creation - filters samples below n reads (currently 1000)
 
 			cd temp
-			rm barcode-sample-16S.csv
+			rm barcode-sample-ITS.csv
    			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
       			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 8000 ]; then echo $i; fi; done > samples_below_threshold.tsv
 			mv sample2.tsv "$TMPDIR"/"$client"
@@ -219,7 +219,7 @@ dos2unix details.tsv
 
    			### New samples sheet creation - filters samples below n reads (currently 1000)
 			cd temp
-			rm barcode-sample-16S.csv
+			rm barcode-sample-ITS.csv
    			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -gt 1000 ]; then echo -e "$i\t$PWD/$i"; fi; done > sample2.tsv
       			ls *fastq | while read i; do count=$(grep -o 'ccs' "$i" | wc -l); if [ "$count" -le 8000 ]; then echo $i; fi; done > samples_below_threshold.tsv
 			mv sample2.tsv "$TMPDIR"/"$client"
