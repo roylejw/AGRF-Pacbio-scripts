@@ -10,7 +10,7 @@ echo "!!! Please make sure you run this in a screen! You will time-out your conn
 echo "What job are you wanting to complete? Select and type the number."
 echo "1. Hifiasm assembly"
 echo "2. Run the 16S pipeline"
-echo "3. Run the ITS pipeline - NOT IN USE YET"
+echo "3. Run the ITS pipeline"
 echo "4. Run hifiasm_meta - metagenome assembly"
 
 instance_build=$(whoami)
