@@ -43,7 +43,7 @@ elif [ ! -e /mnt/efs/fs2/pool_party_ITS/"$run_number"/details.tsv ]; then
 fi
 
 if [[ "$kinnex" == "yes" ]] ; then
-	if [ ! -f "/mnt/efs/fs2/pool_party/$run_number/skera-complete" ]; then
+	if [ ! -f "/mnt/efs/fs2/pool_party_ITS/$run_number/skera-complete" ]; then
         conda activate pbtk
         conda install -y -c bioconda pbskera
         cp /mnt/efs/fs1/resources/mas12_primers.fasta .
