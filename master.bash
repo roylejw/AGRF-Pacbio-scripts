@@ -174,7 +174,9 @@ if [[ "$job_type" == 2 ]] ; then
 	
 	cp contracts.txt /mnt/efs/fs2/pool_party/"$run_number"/.
 	cp details.tsv /mnt/efs/fs2/pool_party/"$run_number"/.
-	cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/.
+ 	if [ ! -f /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format" ]; then
+  		cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/.
+    	fi
 	source ~/PacBio-related-scripts/scripts/combined_16S_analysis.sh
 fi
 
