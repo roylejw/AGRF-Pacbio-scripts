@@ -215,6 +215,9 @@ if [[ "$job_type" == 3 ]] ; then
 		format="${full_filename##*.}"  # extracts extension
 	fi
 	
+        echo "Is this a Kinnex 16S/ITS dataset? Does it need to segment the reads first? Answer 'yes' or 'no'."
+        read -r kinnex
+
 	echo "What would you like to downsample to (default is 100000 per sample - press enter if you're happy with that value)"
 	read -r downsample
 	if [ -z "$downsample" ]; then
