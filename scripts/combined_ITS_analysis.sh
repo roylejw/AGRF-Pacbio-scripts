@@ -1,5 +1,4 @@
 #!/bin/sh
-
 echo "Script by Jack Royle, AGRF. Please email jack.royle@agrf.org.au if any issues."
 source ~/miniconda3/etc/profile.d/conda.sh
 sudo yum install -y zip dos2unix
