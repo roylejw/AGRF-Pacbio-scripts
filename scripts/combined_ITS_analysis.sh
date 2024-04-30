@@ -42,7 +42,17 @@ elif [ ! -e /mnt/efs/fs2/pool_party_ITS/"$run_number"/details.tsv ]; then
 	echo "Verification failed."
 	exit 1
 fi
-	
+
+if [[ "$kinnex" == "yes" ]] ; then
+        conda activate pbtk
+        conda install -y -c bioconda pbskera
+        cp /mnt/efs/fs1/resources/mas12_primers.fasta .
+        rm /mnt/efs/fs2/pool_party_ITS/"$run_number"/"$filename"."$format"
+        mv "$filename"."$format" skera.bam
+        skera split skera.bam mas12_primers.fasta "$filename"."$format"
+        cp "$filename"."$format" /mnt/efs/fs2/pool_party_ITS/"$run_number"/"$filename"."$format"
+fi
+
 cd /mnt/efs/fs2/pool_party_ITS/"$run_number"
 echo "Dos2Unix'ing the input files."
 dos2unix contracts.txt
