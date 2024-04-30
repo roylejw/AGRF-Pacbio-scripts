@@ -43,14 +43,20 @@ elif [ ! -e /mnt/efs/fs2/pool_party/"$run_number"/details.tsv ]; then
 	exit 1
 fi
 
+if [
+
 if [[ "$kinnex" == "yes" ]] ; then
-        conda activate pbtk
-        conda install -y -c bioconda pbskera
-        cp /mnt/efs/fs1/resources/mas12_primers.fasta .
-        rm /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
-        mv "$filename"."$format" skera.bam
-        skera split skera.bam mas12_primers.fasta "$filename"."$format"
-        cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
+	if [ ! -f "/mnt/efs/fs2/pool_party/$run_number/skera-complete" ]; then
+        	conda activate pbtk
+        	conda install -y -c bioconda pbskera
+        	cp /mnt/efs/fs1/resources/mas12_primers.fasta .
+       		rm /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
+        	mv "$filename"."$format" skera.bam
+        	skera split skera.bam mas12_primers.fasta "$filename"."$format"
+		touch /mnt/efs/fs2/pool_party/"$run_number"/skera-complete
+        	cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
+	else
+        	echo "Deconcatination already executed. Skipping."
 fi
 
 cd /mnt/efs/fs2/pool_party/"$run_number"
@@ -82,7 +88,12 @@ dos2unix details.tsv
 
 		cp "$EFS"/"$run_number"/contracts.txt .
 		cp "$EFS"/"$run_number"/details.tsv .
-		cp "$EFS"/../../fs1/resources/16S.fasta .
+  		if [[ "$kinnex" == "yes" ]] ; then
+    			cp "$EFS"/../../fs1/resources/kinnex16S.fasta .
+       			mv kinnex16S.fasta 16S.fasta
+	  	else
+    			cp "$EFS"/../../fs1/resources/16S.fasta .
+       		fi
 		cp "$EFS"/../../fs1/resources/lima_headers_only.csv .
 		cp "$EFS"/../../fs1/resources/sample_headers_only.tsv .
 		cp "$EFS"/../../fs1/resources/metadata_headers_only.tsv .
