@@ -43,20 +43,19 @@ elif [ ! -e /mnt/efs/fs2/pool_party/"$run_number"/details.tsv ]; then
 	exit 1
 fi
 
-if [
-
 if [[ "$kinnex" == "yes" ]] ; then
 	if [ ! -f "/mnt/efs/fs2/pool_party/$run_number/skera-complete" ]; then
-        	conda activate pbtk
-        	conda install -y -c bioconda pbskera
-        	cp /mnt/efs/fs1/resources/mas12_primers.fasta .
-       		rm /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
-        	mv "$filename"."$format" skera.bam
-        	skera split skera.bam mas12_primers.fasta "$filename"."$format"
+        conda activate pbtk
+        conda install -y -c bioconda pbskera
+        cp /mnt/efs/fs1/resources/mas12_primers.fasta .
+       	rm /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
+        mv "$filename"."$format" skera.bam
+        skera split skera.bam mas12_primers.fasta "$filename"."$format"
 		touch /mnt/efs/fs2/pool_party/"$run_number"/skera-complete
-        	cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
+        cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
 	else
         	echo "Deconcatination already executed. Skipping."
+	fi
 fi
 
 cd /mnt/efs/fs2/pool_party/"$run_number"
