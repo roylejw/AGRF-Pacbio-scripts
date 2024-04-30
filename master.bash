@@ -252,6 +252,9 @@ if [[ "$job_type" == 3 ]] ; then
 	
 	cp contracts.txt /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
 	cp details.tsv /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
+ 	if [ ! -f /mnt/efs/fs2/pool_party_ITS/"$run_number"/"$filename"."$format" ]; then
+  		cp "$filename"."$format" /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
+    	fi
 	cp "$filename"."$format" /mnt/efs/fs2/pool_party_ITS/"$run_number"/.
 	source ~/PacBio-related-scripts/scripts/combined_ITS_analysis.sh
 fi
