@@ -169,7 +169,8 @@ dos2unix details.tsv
 			conda activate pbtk
 			format=fastq
 			echo "Running Lima - started at" && date
-			lima -j 6 --hifi-preset ASYMMETRIC --biosample-csv barcode-sample-16S.csv --split-named --output-missing-pairs "$EFS"/"$run_number"/"$filename"."$format" 16S.fasta demux."$format" 
+   			num_cpus=$(nproc)
+			lima -j "$num_cpus" --hifi-preset ASYMMETRIC --biosample-csv barcode-sample-16S.csv --split-named --output-missing-pairs "$EFS"/"$run_number"/"$filename"."$format" 16S.fasta demux."$format" 
    			conda deactivate
 			echo "Finished Lima at" && date
 			
