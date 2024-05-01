@@ -94,7 +94,7 @@ dos2unix details.tsv
        		fi
 		cp "$EFS"/../../fs1/resources/lima_headers_only.csv .
 		cp "$EFS"/../../fs1/resources/sample_headers_only.tsv .
-		cp "$EFS"/../../fs1/resources/metadata_headers_only.tsv .
+		cp "$EFS"/../../fs1/resources/metadata_headers_only_ITS.tsv .
 
 		# Check and remove spaces from client submitted sample names and all other columns - probably super inefficient but IDC
   
@@ -212,10 +212,10 @@ dos2unix details.tsv
    
    			filtered_files=$(awk '{print $1}' sample2.tsv)
 			awk -vOFS='\t' -v filtered_files="$filtered_files" 'BEGIN { split(filtered_files, arr, " "); for (i in arr) filtered[arr[i]] } $2 ".fastq" in filtered { print $2 ".fastq", $4 }' details.tsv > metadata2.tsv
-   			cat metadata_headers_only.tsv metadata2.tsv > metadata.tsv
+   			cat metadata_headers_only_ITS.tsv metadata2.tsv > metadata.tsv
       			rm sample2.tsv
 			rm metadata2.tsv
-			rm metadata_headers_only.tsv
+			rm metadata_headers_only_ITS.tsv
 
 		else
 
@@ -252,10 +252,10 @@ dos2unix details.tsv
    
    			filtered_files=$(awk '{print $1}' sample2.tsv)
 			awk -vOFS='\t' -v filtered_files="$filtered_files" 'BEGIN { split(filtered_files, arr, " "); for (i in arr) filtered[arr[i]] } $2 ".fastq" in filtered { print $2 ".fastq", $4 }' details.tsv > metadata2.tsv
-   			cat metadata_headers_only.tsv metadata2.tsv > metadata.tsv
+   			cat metadata_headers_only_ITS.tsv metadata2.tsv > metadata.tsv
       			rm sample2.tsv
 			rm metadata2.tsv
-			rm metadata_headers_only.tsv
+			rm metadata_headers_only_ITS.tsv
 		fi
 		
 	echo ""$client" files are set-up."
