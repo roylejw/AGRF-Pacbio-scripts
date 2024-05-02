@@ -323,5 +323,6 @@ while read client || [[ $client ]]; do
   done < "$contracts"
 
 aws s3 cp --recursive "$EFS"/"$run_number"/ s3://its-out/"$run_number"/
+rm "$EFS"/"$run_number"/*.fastq
 
 aws ec2 stop-instances --instance-ids "$instance"
