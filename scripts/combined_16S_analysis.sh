@@ -52,7 +52,7 @@ if [[ "$kinnex" == "yes" ]] ; then
         mv "$filename"."$format" skera.bam
         skera split skera.bam mas12_primers.fasta "$filename"."$format"
 		touch /mnt/efs/fs2/pool_party/"$run_number"/skera-complete
-        cp "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
+        mv "$filename"."$format" /mnt/efs/fs2/pool_party/"$run_number"/"$filename"."$format"
 	else
         	echo "Deconcatination already executed. Skipping."
 	fi
@@ -330,5 +330,6 @@ while read client || [[ $client ]]; do
   done < "$contracts"
 
 aws s3 cp --recursive "$EFS"/"$run_number"/ s3://16s-out/"$run_number"/
+rm "$EFS"/"$run_number"/*.fastq
 
 aws ec2 stop-instances --instance-ids "$instance"
