@@ -240,7 +240,11 @@ dos2unix details.tsv
      
 			cd temp
    			rm *.fastq
-			cp "$EFS"/"$run_number"/"$client"/Demultiplexed/*.fastq .
+      			filter1=$(awk 'NR>1 {print $2}' "$TMPDIR"/"$client"/details.tsv)
+	 		echo ${filter} | tr ' ' '\n' | while read i; do 
+    				echo $i.fastq
+				cp  "$EFS"/"$run_number"/"$client"/Demultiplexed/$i.fastq .
+    			done
 
 			### Check and remove spaces in file names
 			
