@@ -234,8 +234,12 @@ dos2unix details.tsv
 
 			### Copies previously demuxed fastq's in to temp folder
 
-   			mkdir temp
+   			if [ ! -d "$TMPDIR"/"$client"/temp ]; then
+      				mkdir temp
+	  		fi
+     
 			cd temp
+   			rm *.fastq
 			cp "$EFS"/"$run_number"/"$client"/Demultiplexed/*.fastq .
 
 			### Check and remove spaces in file names
