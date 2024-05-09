@@ -31,6 +31,12 @@ while [ "$job_type" -ge 5 ] || [ "$job_type" -le 0 ]; do
 done
 MAX_TRIES=0
 
+### Set Verbosity ###
+
+read -p "Set to debug/verbose [y/n]?" verbose
+if [ "$verbose" == "y" ]; then
+	set -x
+fi
 
 ### HIFIASM ASSEMBLY ###
 
