@@ -188,7 +188,7 @@ To then remove any spaces in the filename afterwards:
 ## <h3 align="center">Contact</h3>
 
 Jack Royle <br />
-Email: jack.royle@agrf.org.au   <br />    [![LinkedIn][linkedin-shield]][linkedin-url]
+Email: jack.wl.royle@gmail.com   <br />    [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
