@@ -1,17 +1,6 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://www.agrf.org.au">
-    <img src="logos/logo.png" alt="Logo" width="110" height="100">
-  </a>
-  &nbsp;
-  <a href="https://www.pacb.com">
-    <img src="logos/pacbio-logo.PNG" alt="Logo" width="150" height="80">
-  </a>
-</div>
 
 <h3 align="center">An AGRF repository for manipulating, assembling and analysing HiFi data in AWS</h3>
 
